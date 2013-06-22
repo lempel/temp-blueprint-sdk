@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<socks>
-	<bind address="*" port="1080"></bind>
-	<reactor class="lempel.blueprint.service.socks.Socks5Reactor"></reactor>
-	<auth doAuth="false">
-		<user uname="test" passwd="test" />
-	</auth>
-</socks>
