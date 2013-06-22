@@ -52,7 +52,7 @@ import java.util.StringTokenizer;
 
 import lempel.blueprint.base.config.XmlConfig;
 import lempel.blueprint.base.log.Logger;
-import lempel.blueprint.base.util.ClassPathModifier;
+import bluerpint.sdk.util.jvm.ClasspathModifier;
 
 /**
  * Add all dir/jar/zip files to current classpath and load target program within
@@ -103,7 +103,7 @@ public class LoadHandler extends AbstractHandler {
 			try {
 				dir = dir.trim();
 				buffer.append(dir).append(pathSeparator);
-				ClassPathModifier.addPath(dir);
+				ClasspathModifier.addPath(dir);
 				LOGGER.info("class dir - " + dir);
 			} catch (IOException e) {
 				LOGGER.error("can't class dir - " + dir);
@@ -116,7 +116,7 @@ public class LoadHandler extends AbstractHandler {
 			try {
 				file = file.trim();
 				buffer.append(file).append(pathSeparator);
-				ClassPathModifier.addPath(file);
+				ClasspathModifier.addPath(file);
 				LOGGER.info("jar file - " + file);
 			} catch (IOException e) {
 				LOGGER.error("can't add jar file - " + file);
@@ -206,7 +206,7 @@ public class LoadHandler extends AbstractHandler {
 					try {
 						// add all jar/zip files
 						buffer.append(target.getAbsolutePath()).append(pathSeparator);
-						ClassPathModifier.addPath(target.getAbsolutePath());
+						ClasspathModifier.addPath(target.getAbsolutePath());
 						LOGGER.info("jar file - " + target.getAbsolutePath());
 					} catch (IOException e) {
 						LOGGER.error("can't add jar file - " + target.getAbsolutePath());
