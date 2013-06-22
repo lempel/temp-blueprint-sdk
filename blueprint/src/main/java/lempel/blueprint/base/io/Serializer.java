@@ -48,7 +48,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import lempel.blueprint.base.util.Validator;
-
 import uka.transport.MemoryInputStream;
 import uka.transport.MemoryOutputStream;
 

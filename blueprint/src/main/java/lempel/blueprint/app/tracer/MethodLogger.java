@@ -1,7 +1,10 @@
 package lempel.blueprint.app.tracer;
 
-import java.util.*;
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.util.Hashtable;
 
 /**
  * ------------------------------ Method Tracing Instrumentation

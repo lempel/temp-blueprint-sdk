@@ -46,6 +46,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 import lempel.blueprint.base.log.Logger;
+import bluerpint.sdk.util.jvm.shutdown.Terminatable;
 
 /**
  * Checks registered Terminatables and terminates timed-out or invalid ones
@@ -60,6 +61,7 @@ public final class TimeoutHandler implements Terminatable, Runnable {
 
 	private transient Hashtable<Terminatable, Long> map = new Hashtable<Terminatable, Long>();
 	private transient boolean running = false;
+	private transient boolean terminated = false;
 
 	/** timeout (msec) */
 	private final int timeout;
@@ -113,6 +115,10 @@ public final class TimeoutHandler implements Terminatable, Runnable {
 		return running;
 	}
 
+	public boolean isTerminated() {
+		return terminated;
+	}
+
 	public void terminate() {
 		running = false;
 
@@ -159,6 +165,8 @@ public final class TimeoutHandler implements Terminatable, Runnable {
 			}
 		}
 
+		terminated = true;
+				
 		LOGGER.info(this, "timeout handler stopped - timeout: " + timeout + " interval: " + interval);
 	}
 

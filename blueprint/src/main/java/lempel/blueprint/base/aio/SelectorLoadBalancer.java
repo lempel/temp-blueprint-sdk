@@ -45,7 +45,7 @@ package lempel.blueprint.base.aio;
 import java.nio.channels.Selector;
 import java.util.List;
 
-import lempel.blueprint.base.concurrent.Terminatable;
+import bluerpint.sdk.util.jvm.shutdown.Terminatable;
 
 /**
  * Load Balancer for Selector list
@@ -57,6 +57,8 @@ import lempel.blueprint.base.concurrent.Terminatable;
  */
 public class SelectorLoadBalancer implements Terminatable {
 	private transient final List<Selector> selectors;
+
+	private transient boolean terminated = false;
 
 	public SelectorLoadBalancer(final List<Selector> selectors) {
 		this.selectors = selectors;
@@ -81,9 +83,15 @@ public class SelectorLoadBalancer implements Terminatable {
 		return (selectors.isEmpty()) ? false : true;
 	}
 
+	public boolean isTerminated() {
+		return terminated;
+	}
+
 	public void terminate() {
 		while (!selectors.isEmpty()) {
 			SelectorFactory.release(selectors.remove(0));
 		}
+		
+		terminated = true;
 	}
 }

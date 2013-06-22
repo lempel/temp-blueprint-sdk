@@ -50,11 +50,11 @@ import java.net.SocketAddress;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
-import lempel.blueprint.base.concurrent.Terminatable;
 import lempel.blueprint.base.concurrent.TimeoutHandler;
 import lempel.blueprint.base.io.IpFilter;
 import lempel.blueprint.base.log.Logger;
 import lempel.blueprint.base.util.Validator;
+import bluerpint.sdk.util.jvm.shutdown.Terminatable;
 
 /**
  * A Service<br>
@@ -82,6 +82,8 @@ public class Service implements Runnable, Terminatable {
 	private transient ServerSocketChannel serverChannel;
 	private transient TimeoutHandler timeoutHandler = null;
 	private final IpFilter ipFilter;
+
+	private transient boolean terminated = false;
 
 	public Service(final String serviceName, final Proactor proactor) {
 		LOGGER.info(this, "creating service [" + serviceName + "]");
@@ -163,6 +165,8 @@ public class Service implements Runnable, Terminatable {
 				LOGGER.trace(e);
 			}
 		}
+
+		terminated = true;
 	}
 
 	public boolean isValid() {
@@ -171,6 +175,10 @@ public class Service implements Runnable, Terminatable {
 			result = true;
 		}
 		return result;
+	}
+
+	public boolean isTerminated() {
+		return terminated;
 	}
 
 	public void terminate() {

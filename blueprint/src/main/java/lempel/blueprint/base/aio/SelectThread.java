@@ -47,8 +47,8 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.util.Set;
 
-import lempel.blueprint.base.concurrent.Terminatable;
 import lempel.blueprint.base.log.Logger;
+import bluerpint.sdk.util.jvm.shutdown.Terminatable;
 
 /**
  * Polls a Selector & invokes a task
@@ -65,6 +65,7 @@ public abstract class SelectThread extends Thread implements Terminatable {
 	/** think time to prevent excessive CPU consumption (msec) */
 	private int thinkTime = 10;
 	private boolean running = false;
+	private transient boolean terminated = false;
 
 	public SelectThread(final Selector selector) {
 		this(selector, 10);
@@ -124,6 +125,8 @@ public abstract class SelectThread extends Thread implements Terminatable {
 			}
 		}
 
+		terminated = true;
+
 		LOGGER.debug(this, "select thread stopped");
 	}
 
@@ -140,6 +143,10 @@ public abstract class SelectThread extends Thread implements Terminatable {
 
 	public boolean isValid() {
 		return running;
+	}
+
+	public boolean isTerminated() {
+		return terminated;
 	}
 
 	public void terminate() {

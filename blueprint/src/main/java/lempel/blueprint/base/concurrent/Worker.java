@@ -43,6 +43,7 @@
 package lempel.blueprint.base.concurrent;
 
 import lempel.blueprint.base.log.Logger;
+import bluerpint.sdk.util.jvm.shutdown.Terminatable;
 
 /**
  * Worker Thread
@@ -58,6 +59,8 @@ public abstract class Worker<T> implements Terminatable, Runnable {
 	protected transient JobQueue<T> jobQueue = null;
 
 	private transient boolean running = false;
+	
+	private transient boolean terminated = false;
 
 	private transient boolean active = false;
 
@@ -88,6 +91,8 @@ public abstract class Worker<T> implements Terminatable, Runnable {
 				active = false;
 			}
 		}
+		
+		terminated = true;
 	}
 
 	/**
@@ -103,6 +108,10 @@ public abstract class Worker<T> implements Terminatable, Runnable {
 
 	public boolean isValid() {
 		return isRunning();
+	}
+
+	public boolean isTerminated() {
+		return terminated;
 	}
 
 	public void terminate() {

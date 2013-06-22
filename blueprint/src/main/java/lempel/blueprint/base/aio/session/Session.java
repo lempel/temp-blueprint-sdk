@@ -50,8 +50,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import lempel.blueprint.base.aio.SelectorLoadBalancer;
 import lempel.blueprint.base.aio.SocketChannelWrapper;
 import lempel.blueprint.base.aio.protocol.Protocol;
-import lempel.blueprint.base.concurrent.Terminatable;
 import lempel.blueprint.base.util.Validator;
+import bluerpint.sdk.util.jvm.shutdown.Terminatable;
 
 /**
  * Provides basic functions and guidelines for client session implementation.<br>
@@ -76,6 +76,8 @@ public abstract class Session implements Terminatable {
 
 	protected Protocol protocol;
 	protected ByteBuffer readBuffer;
+
+	private transient boolean terminated = false;
 
 	/**
 	 * Constructor
@@ -103,6 +105,10 @@ public abstract class Session implements Terminatable {
 		return wrapper.isValid();
 	}
 
+	public boolean isTerminated() {
+		return terminated;
+	}
+
 	public void terminate() {
 		if (Validator.isNotNull(wrapper)) {
 			wrapper.terminate();
@@ -116,6 +122,8 @@ public abstract class Session implements Terminatable {
 			readBuffer.clear();
 			readBuffer = null;
 		}
+
+		terminated = true;
 	}
 
 	/**

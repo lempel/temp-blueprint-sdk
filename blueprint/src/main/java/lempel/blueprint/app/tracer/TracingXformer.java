@@ -1,16 +1,28 @@
 package lempel.blueprint.app.tracer;
 
-import java.io.*;
-import java.lang.instrument.*;
-
-import org.apache.bcel.classfile.*;
-import org.apache.bcel.Repository;
-import org.apache.bcel.Constants;
-import org.apache.bcel.generic.*;
-import org.apache.bcel.util.SyntheticRepository;
-
-
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.lang.instrument.ClassFileTransformer;
+import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
+
+import org.apache.bcel.Constants;
+import org.apache.bcel.classfile.Code;
+import org.apache.bcel.classfile.JavaClass;
+import org.apache.bcel.classfile.Method;
+import org.apache.bcel.generic.ALOAD;
+import org.apache.bcel.generic.ATHROW;
+import org.apache.bcel.generic.ClassGen;
+import org.apache.bcel.generic.ConstantPoolGen;
+import org.apache.bcel.generic.INVOKESPECIAL;
+import org.apache.bcel.generic.INVOKESTATIC;
+import org.apache.bcel.generic.Instruction;
+import org.apache.bcel.generic.InstructionFactory;
+import org.apache.bcel.generic.InstructionList;
+import org.apache.bcel.generic.MethodGen;
+import org.apache.bcel.generic.PUSH;
+import org.apache.bcel.generic.RETURN;
+import org.apache.bcel.generic.Type;
 
 public class TracingXformer implements ClassFileTransformer {
 	public static Object lock = new Object();

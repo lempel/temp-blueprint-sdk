@@ -1,7 +1,10 @@
 package lempel.blueprint.app.tracer;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Properties;
+import java.util.StringTokenizer;
 
 public class TracingProperties {
 	private boolean debug = false;

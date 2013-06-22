@@ -49,6 +49,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import lempel.blueprint.base.log.Logger;
+import bluerpint.sdk.util.jvm.shutdown.Terminatable;
+import bluerpint.sdk.util.jvm.shutdown.Terminator;
 
 /**
  * A Group of Workers<br>
@@ -74,6 +76,7 @@ public class WorkerGroup implements Terminatable, Runnable {
 	protected transient final List<Worker<?>> workers;
 
 	private transient boolean running = false;
+	private transient boolean terminated = false;
 
 	/**
 	 * Constructor<br>
@@ -155,6 +158,10 @@ public class WorkerGroup implements Terminatable, Runnable {
 		return running;
 	}
 
+	public boolean isTerminated() {
+		return terminated;
+	}
+
 	public void terminate() {
 		running = false;
 
@@ -189,7 +196,7 @@ public class WorkerGroup implements Terminatable, Runnable {
 		long start = 0L;
 
 		long maxThroughput = 0;
-		
+
 		jobQueue.setCount(true);
 
 		while (running) {
@@ -231,6 +238,8 @@ public class WorkerGroup implements Terminatable, Runnable {
 				}
 			}
 		}
+
+		terminated = true;
 	}
 
 	public String getActivity() {

@@ -46,7 +46,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-import lempel.blueprint.base.concurrent.Terminatable;
+import bluerpint.sdk.util.jvm.shutdown.Terminatable;
 
 /**
  * Log appender for file
@@ -66,6 +66,7 @@ public class FileAppender implements Terminatable, Runnable, IAppender {
 	protected String errFileName = "";
 
 	private transient boolean runFlag = false;
+	private transient boolean terminated = false;
 
 	/**
 	 * Constructor
@@ -165,6 +166,10 @@ public class FileAppender implements Terminatable, Runnable, IAppender {
 		return runFlag;
 	}
 
+	public boolean isTerminated() {
+		return terminated;
+	}
+
 	public void terminate() {
 		runFlag = false;
 	}
@@ -212,6 +217,8 @@ public class FileAppender implements Terminatable, Runnable, IAppender {
 			} catch (InterruptedException ignored) {
 			}
 		}
+
+		terminated = true;
 	}
 
 	/*

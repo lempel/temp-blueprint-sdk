@@ -56,12 +56,12 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import lempel.blueprint.base.aio.session.Session;
-import lempel.blueprint.base.concurrent.Terminatable;
-import lempel.blueprint.base.concurrent.Terminator;
 import lempel.blueprint.base.concurrent.TimeoutHandler;
 import lempel.blueprint.base.concurrent.WorkerGroup;
 import lempel.blueprint.base.log.Logger;
 import lempel.blueprint.base.util.Validator;
+import bluerpint.sdk.util.jvm.shutdown.Terminatable;
+import bluerpint.sdk.util.jvm.shutdown.Terminator;
 
 /**
  * Proactor for Service
@@ -84,6 +84,8 @@ public class Proactor implements Terminatable {
 	/** I/O buffer size in byte */
 	private final int bufferSize;
 	private transient TimeoutHandler timeoutHandler = null;
+
+	private transient boolean terminated = false;
 
 	/**
 	 * Constructor
@@ -203,6 +205,10 @@ public class Proactor implements Terminatable {
 		return true;
 	}
 
+	public boolean isTerminated() {
+		return terminated;
+	}
+
 	public void terminate() {
 		LOGGER.info(this, "terminating proactor");
 
@@ -226,6 +232,8 @@ public class Proactor implements Terminatable {
 			}
 			sessionMap.clear();
 		}
+
+		terminated = true;
 
 		LOGGER.info(this, "proactor teminated");
 	}

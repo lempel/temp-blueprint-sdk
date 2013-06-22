@@ -46,8 +46,8 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.util.List;
 
-import lempel.blueprint.base.concurrent.Terminatable;
 import lempel.blueprint.base.log.Logger;
+import bluerpint.sdk.util.jvm.shutdown.Terminatable;
 
 /**
  * Monitors memory usage<br>
@@ -69,6 +69,7 @@ public class MemoryMonitor implements Terminatable, Runnable {
 	private static final int MAX_WARNINGS = 6;
 
 	private boolean running = false;
+	private transient boolean terminated = false;
 	private boolean trace = false;
 
 	public MemoryMonitor() {
@@ -83,6 +84,10 @@ public class MemoryMonitor implements Terminatable, Runnable {
 
 	public boolean isValid() {
 		return running;
+	}
+
+	public boolean isTerminated() {
+		return terminated;
 	}
 
 	public void terminate() {
@@ -166,5 +171,7 @@ public class MemoryMonitor implements Terminatable, Runnable {
 				interrupted = true;
 			}
 		}
+
+		terminated = true;
 	}
 }

@@ -52,9 +52,9 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 
-import lempel.blueprint.base.concurrent.Terminatable;
 import lempel.blueprint.base.concurrent.TimeoutHandler;
 import lempel.blueprint.base.util.Validator;
+import bluerpint.sdk.util.jvm.shutdown.Terminatable;
 
 /**
  * Provides EASIER way to handle SocketChannel.<br>
@@ -76,6 +76,8 @@ public class SocketChannelWrapper implements Terminatable {
 	private transient Selector connectSelector;
 	private transient Selector readSelector;
 	private transient Selector writeSelector;
+
+	private transient boolean terminated = false;
 
 	public SocketChannelWrapper(SocketChannel channel) {
 		this.channel = channel;
@@ -300,11 +302,17 @@ public class SocketChannelWrapper implements Terminatable {
 		return Validator.isValid(channel);
 	}
 
+	public boolean isTerminated() {
+		return terminated;
+	}
+
 	public void terminate() {
 		try {
 			close();
 		} catch (IOException ignored) {
 		}
+
+		terminated = true;
 	}
 
 	@Override
