@@ -42,6 +42,10 @@
  */
 package lempel.blueprint.base.util;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
+import java.util.List;
+
 import lempel.blueprint.base.concurrent.Terminatable;
 import lempel.blueprint.base.log.Logger;
 
@@ -65,6 +69,17 @@ public class MemoryMonitor implements Terminatable, Runnable {
 	private static final int MAX_WARNINGS = 6;
 
 	private boolean running = false;
+	private boolean trace = false;
+
+	public MemoryMonitor() {
+		super();
+	}
+
+	public MemoryMonitor(boolean trace) {
+		super();
+
+		this.trace = trace;
+	}
 
 	public boolean isValid() {
 		return running;
@@ -74,40 +89,27 @@ public class MemoryMonitor implements Terminatable, Runnable {
 		running = false;
 	}
 
-	/**
-	 * returns memory usage in %
-	 * 
-	 * @return
-	 */
 	public static int getMemoryUsage() {
 		Runtime rtime = Runtime.getRuntime();
-		long total;
-		long used;
-
-		// get total heap size
-		if (isXmxSet()) {
-			// if -Xmx is not specified, use current heap size
-			total = rtime.totalMemory();
-			used = rtime.totalMemory() - rtime.freeMemory();
-		} else {
-			// use -Xmx value
-			total = rtime.maxMemory();
-			used = rtime.totalMemory() - rtime.freeMemory();
-		}
-
-		double usage = (double) used / (double) total;
-
-		return (int) (usage * 100d);
+		long total = rtime.maxMemory();
+		long used = rtime.totalMemory() - rtime.freeMemory();
+		double ratio = (double) used / (double) total;
+		return (int) (ratio * 100d);
 	}
 
-	/**
-	 * is -Xmx argument set?
-	 * 
-	 * @return true: yes
-	 */
 	public static boolean isXmxSet() {
-		Runtime rtime = Runtime.getRuntime();
-		return rtime.maxMemory() == Long.MAX_VALUE;
+		boolean result = false;
+
+		RuntimeMXBean RuntimemxBean = ManagementFactory.getRuntimeMXBean();
+		List<String> arguments = RuntimemxBean.getInputArguments();
+		for (String arg : arguments) {
+			if (arg.toLowerCase().startsWith("-xmx")) {
+				result = true;
+				break;
+			}
+		}
+
+		return result;
 	}
 
 	public void start() {
@@ -122,16 +124,22 @@ public class MemoryMonitor implements Terminatable, Runnable {
 
 		boolean interrupted = false;
 		int warnCount = 0;
+		boolean xmx = isXmxSet();
 
 		while (running) {
 			if (!interrupted) {
-				int usage = getMemoryUsage();
-				if (usage >= WARNING_USAGE) {
+				Runtime rtime = Runtime.getRuntime();
+				long total = rtime.maxMemory();
+				long used = rtime.totalMemory() - rtime.freeMemory();
+				double ratio = (double) used / (double) total;
+				int percent = (int) (ratio * 100d);
+
+				if (percent >= WARNING_USAGE) {
 					warnCount++;
 					if (warnCount >= MAX_WARNINGS) {
 						LOGGER.error(this, "LOW FREE MEMORY!! Memory usage is Critical. Over " + WARNING_USAGE
 								+ "% for long time.");
-						if (isXmxSet()) {
+						if (xmx) {
 							LOGGER.error(this, "RECOMMEND: 1. Increase -Xmx value");
 						} else {
 							LOGGER.error(this, "RECOMMEND: 1. Set -Xmx value");
@@ -140,10 +148,14 @@ public class MemoryMonitor implements Terminatable, Runnable {
 						LOGGER.error(this, "RECOMMEND: 3. Increase performance (tune or get better system)");
 						warnCount = 0;
 					} else {
-						LOGGER.warning(this, "Memory usage: " + usage + "%");
+						LOGGER.warning(this, "Memory usage: " + percent + "% - " + (used / 1024 / 1024) + "M");
 					}
 				} else {
 					warnCount = 0;
+				}
+
+				if (trace) {
+					LOGGER.info(this, "Memory usage: " + percent + "% - " + (used / 1024 / 1024) + "M");
 				}
 			}
 

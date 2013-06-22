@@ -59,6 +59,8 @@ public abstract class Worker<T> implements Terminatable, Runnable {
 
 	private transient boolean running = false;
 
+	private transient boolean active = false;
+
 	public Worker(final JobQueue<T> jobQueue) {
 		this.jobQueue = jobQueue;
 	}
@@ -76,11 +78,14 @@ public abstract class Worker<T> implements Terminatable, Runnable {
 		while (running) {
 			try {
 				// blocks until queue have something to pop
-				process(jobQueue.pop());
+				T job = jobQueue.pop();
+				active = true;
+				process(job);
 			} catch (InterruptedException e) {
 				LOGGER.error(this, e.toString());
 			} finally {
 				jobQueue.increaseProcessedJobCounter();
+				active = false;
 			}
 		}
 	}
@@ -102,6 +107,10 @@ public abstract class Worker<T> implements Terminatable, Runnable {
 
 	public void terminate() {
 		running = false;
+	}
+
+	public boolean isActive() {
+		return active;
 	}
 
 	@Override

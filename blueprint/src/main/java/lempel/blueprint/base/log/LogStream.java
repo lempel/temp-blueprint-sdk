@@ -42,6 +42,7 @@
  */
 package lempel.blueprint.base.log;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -69,8 +70,12 @@ public class LogStream extends PrintStream {
 		super(stream);
 	}
 
+	public LogStream(final OutputStream stream, final boolean autoFlush) {
+		super(stream, autoFlush);
+	}
+
 	public LogStream(final String fileName) throws FileNotFoundException {
-		super(new FileOutputStream(fileName));
+		super(new FileOutputStream(fileName, true));
 	}
 
 	public void println(final boolean val) {
@@ -145,7 +150,7 @@ public class LogStream extends PrintStream {
 		}
 	}
 
-	public void printTimeStamp() {
+	protected void printTimeStamp() {
 		timeStamp[0] = '[';
 		timeStamp[3] = '/';
 		timeStamp[6] = ' ';
@@ -178,5 +183,21 @@ public class LogStream extends PrintStream {
 		timeStamp = null;
 
 		super.finalize();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.io.PrintStream#close()
+	 */
+	@Override
+	public void close() {
+		// do not close original System.out/err
+		SystemAppender sysAppender = new SystemAppender();
+		if (sysAppender.getOutStream().equals(out) || sysAppender.getErrStream().equals(out)) {
+			out = new ByteArrayOutputStream(1);
+		}
+
+		super.close();
 	}
 }

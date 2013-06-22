@@ -164,7 +164,6 @@ public class XmlConfig implements Config {
 		return result;
 	}
 
-	@SuppressWarnings("unchecked")
 	public String getString(final String path) {
 		String result = null;
 		if (Validator.isNotNull(config)) {
@@ -172,7 +171,7 @@ public class XmlConfig implements Config {
 				XPath expression = new org.jaxen.dom.DOMXPath(path);
 				Navigator navigator = expression.getNavigator();
 
-				List results = expression.selectNodes(config);
+				List<?> results = expression.selectNodes(config);
 				if (results.isEmpty()) {
 					LOGGER.error("configuration path \"" + path + "\" not exists");
 				} else {
@@ -205,14 +204,13 @@ public class XmlConfig implements Config {
 		writer.close();
 	}
 
-	@SuppressWarnings("unchecked")
 	public boolean[] getBooleanArray(final String path) {
 		if (Validator.isNotNull(config)) {
 			try {
 				XPath expression = new org.jaxen.dom.DOMXPath(path);
 				Navigator navigator = expression.getNavigator();
 
-				List results = expression.selectNodes(config);
+				List<?> results = expression.selectNodes(config);
 				int resultSize = results.size();
 				boolean[] resultArray = new boolean[resultSize];
 				for (int i = 0; i < resultSize; i++) {
@@ -229,14 +227,13 @@ public class XmlConfig implements Config {
 		return new boolean[] {};
 	}
 
-	@SuppressWarnings("unchecked")
 	public double[] getDoubleArray(final String path) {
 		if (Validator.isNotNull(config)) {
 			try {
 				XPath expression = new org.jaxen.dom.DOMXPath(path);
 				Navigator navigator = expression.getNavigator();
 
-				List results = expression.selectNodes(config);
+				List<?> results = expression.selectNodes(config);
 				int resultSize = results.size();
 				double[] resultArray = new double[resultSize];
 				for (int i = 0; i < resultSize; i++) {
@@ -256,14 +253,13 @@ public class XmlConfig implements Config {
 		return new double[] {};
 	}
 
-	@SuppressWarnings("unchecked")
 	public float[] getFloatArray(final String path) {
 		if (Validator.isNotNull(config)) {
 			try {
 				XPath expression = new org.jaxen.dom.DOMXPath(path);
 				Navigator navigator = expression.getNavigator();
 
-				List results = expression.selectNodes(config);
+				List<?> results = expression.selectNodes(config);
 				int resultSize = results.size();
 				float[] resultArray = new float[resultSize];
 				for (int i = 0; i < resultSize; i++) {
@@ -283,14 +279,13 @@ public class XmlConfig implements Config {
 		return new float[] {};
 	}
 
-	@SuppressWarnings("unchecked")
 	public int[] getIntArray(final String path) {
 		if (Validator.isNotNull(config)) {
 			try {
 				XPath expression = new org.jaxen.dom.DOMXPath(path);
 				Navigator navigator = expression.getNavigator();
 
-				List results = expression.selectNodes(config);
+				List<?> results = expression.selectNodes(config);
 				int resultSize = results.size();
 				int[] resultArray = new int[resultSize];
 				for (int i = 0; i < resultSize; i++) {
@@ -310,14 +305,13 @@ public class XmlConfig implements Config {
 		return new int[] {};
 	}
 
-	@SuppressWarnings("unchecked")
 	public long[] getLongArray(final String path) {
 		if (Validator.isNotNull(config)) {
 			try {
 				XPath expression = new org.jaxen.dom.DOMXPath(path);
 				Navigator navigator = expression.getNavigator();
 
-				List results = expression.selectNodes(config);
+				List<?> results = expression.selectNodes(config);
 				int resultSize = results.size();
 				long[] resultArray = new long[resultSize];
 				for (int i = 0; i < resultSize; i++) {
@@ -337,14 +331,13 @@ public class XmlConfig implements Config {
 		return new long[] {};
 	}
 
-	@SuppressWarnings("unchecked")
 	public String[] getStringArray(final String path) {
 		if (Validator.isNotNull(config)) {
 			try {
 				XPath expression = new org.jaxen.dom.DOMXPath(path);
 				Navigator navigator = expression.getNavigator();
 
-				List results = expression.selectNodes(config);
+				List<?> results = expression.selectNodes(config);
 				int resultSize = results.size();
 				String[] resultArray = new String[resultSize];
 				for (int i = 0; i < resultSize; i++) {

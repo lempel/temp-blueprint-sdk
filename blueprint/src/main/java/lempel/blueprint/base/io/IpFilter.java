@@ -57,10 +57,8 @@ import lempel.blueprint.base.util.Validator;
  * @last $Date$
  */
 public class IpFilter {
-	@SuppressWarnings("unchecked")
-	private final Map allowed = new HashMap();
-	@SuppressWarnings("unchecked")
-	private final Map banned = new HashMap();
+	private final Map<String, HashMap<?, ?>> allowed = new HashMap<String, HashMap<?, ?>>();
+	private final Map<String, HashMap<?, ?>> banned = new HashMap<String, HashMap<?, ?>>();
 
 	/**
 	 * @param ip
@@ -78,7 +76,6 @@ public class IpFilter {
 		addIp(ip, banned);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void putAll(final IpFilter parent) {
 		allowed.putAll(parent.allowed);
 		banned.putAll(parent.allowed);
@@ -106,27 +103,27 @@ public class IpFilter {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void addIp(final String ip, final Map target) {
-		Map map = target;
+	private void addIp(final String ip, final Map<String, HashMap<?, ?>> target) {
+		Map<String, HashMap<?, ?>> map = target;
 		StringTokenizer tokenizer = new StringTokenizer(ip, ".");
 		for (int i = 0; i < 4 && tokenizer.hasMoreTokens(); i++) {
 			String token = tokenizer.nextToken();
 			if (token != null && !map.containsKey(token)) {
-				map.put(token, new HashMap());
+				map.put(token, new HashMap<Object, Object>());
 			}
 
 			if ("*".equals(token)) {
 				return;
 			}
 
-			map = (HashMap) map.get(token);
+			map = (HashMap<String, HashMap<?, ?>>) map.get(token);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	private boolean containsIp(final String ip, final Map target) {
+	private boolean containsIp(final String ip, final Map<String, HashMap<?, ?>> target) {
 		boolean result = false;
-		Map map = target;
+		Map<String, HashMap<?, ?>> map = target;
 
 		StringTokenizer st = new StringTokenizer(ip, ".");
 		for (int i = 0; i < 4 && st.hasMoreTokens(); i++) {
@@ -139,7 +136,7 @@ public class IpFilter {
 			if (Validator.isNotEmpty(token)) {
 				if (map.containsKey(token)) {
 					result = true;
-					map = (HashMap) map.get(token);
+					map = (HashMap<String, HashMap<?, ?>>) map.get(token);
 				} else {
 					result = false;
 				}

@@ -113,7 +113,7 @@ public class Proactor implements Terminatable {
 	 * @throws NoSuchMethodException
 	 *             Thrown by WorkerGroup
 	 */
-	public Proactor(final Class<? extends Reactor> reactorClass, final int reactorCount, final int readerCount,
+	public Proactor(final Class<Reactor> reactorClass, final int reactorCount, final int readerCount,
 			final Class<? extends Session> sessionClass, final int readBufferSize) throws IOException,
 			IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException,
 			InvocationTargetException, NoSuchMethodException {

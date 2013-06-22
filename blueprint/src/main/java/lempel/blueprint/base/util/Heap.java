@@ -39,7 +39,7 @@ public class Heap {
 	}
 
 	/** perform element comparisons using comparator or natural ordering * */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected int compare(final Object objA, final Object pbjB) {
 		int result;
 		if (cmp == null) {

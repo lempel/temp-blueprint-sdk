@@ -43,6 +43,7 @@
 package lempel.blueprint.base.log;
 
 import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -61,168 +62,157 @@ import lempel.blueprint.base.util.Validator;
 public class Logger {
 	private static final String DEFAULT_LOG_LEVEL = "11111";
 
-	/** Singleton */
-	protected transient static Logger log;
-
-	/** Stream sync. lock */
-	protected transient static ReentrantLock lock = new ReentrantLock();
-
-	/** log level */
-	protected String logLevel = DEFAULT_LOG_LEVEL;
+	private transient static Logger singleton;
 
 	/** whether trace caller's source code or not */
 	private boolean traceFlag = false;
 
 	/** set if out/err stream is different */
-	private boolean separateStream = false;
+	private static boolean separateStream = false;
 
-	// Stream for logging
-	private transient LogStream outStream;
-	private transient LogStream errStream;
+	// Appender for logging
+	private static IAppender appender;
+	// lock for appender
+	private static Object appenderLock;
+
+	static {
+		// do not change order
+		appenderLock = new Object();
+		singleton = new Logger();
+	}
+
+	/** Stream sync. lock */
+	protected transient static ReentrantLock lock = new ReentrantLock();
+
+	/** log level */
+	protected static String logLevel;
+
+	static {
+		logLevel = DEFAULT_LOG_LEVEL;
+	}
 
 	public Logger() {
-		this(false);
+		super();
+
+		// default
+		toConsole();
 	}
 
 	/**
-	 * Constructor
+	 * @return Logger
+	 */
+	public static Logger getInstance() {
+		return singleton;
+	}
+
+	/**
+	 * Print log message to console from now on
+	 * 
+	 * @return Logger
+	 */
+	public static void toConsole() {
+		toConsole(true);
+	}
+
+	/**
+	 * Print log message to console from now on
 	 * 
 	 * @param replaceSystem
-	 *            set to replace System Streams (System.out, System.err)
+	 *            true: replace System.out/err
+	 * @return Logger
 	 */
-	public Logger(final boolean replaceSystem) {
-		synchronized (this) {
-			if (log == null) {
-				log = this;
-				ConsoleAppender appender = new ConsoleAppender(replaceSystem);
-				outStream = appender.outStream;
-				errStream = appender.errStream;
-				separateStream = false;
-			} else {
-				throw new IllegalStateException("You can't create Logger instance more than 1.");
+	public static Logger toConsole(final boolean replaceSystem) {
+		synchronized (appenderLock) {
+			IAppender oldAppender = appender;
+			appender = new ConsoleAppender(replaceSystem);
+			separateStream = false;
+
+			if (oldAppender != null) {
+				oldAppender.close();
 			}
 		}
+
+		return singleton;
 	}
 
 	/**
-	 * Constructor
+	 * Print log message to file from now on
 	 * 
-	 * @param outFileName
-	 *            file name to store System.out's output
+	 * @param outFile
+	 *            log file name
+	 * @return Logger
 	 */
-	public Logger(final String outFileName) {
-		this(outFileName, true);
+	public static Logger toFile(final String outFile) {
+		return toFile(outFile, true, true);
 	}
 
 	/**
-	 * Constructor
+	 * Print log message to file from now on
 	 * 
-	 * @param outFileName
-	 *            file name to store System.out's output
+	 * @param outFile
+	 *            log file name
 	 * @param append
-	 *            true: append
+	 *            true: append to previous file
+	 * @return Logger
 	 */
-	public Logger(final String outFileName, final boolean append) {
-		this(outFileName, append, false);
+	public static Logger toFile(final String outFile, final boolean append) {
+		return toFile(outFile, append, true);
 	}
 
 	/**
-	 * Constructor
+	 * Print log message to file from now on
 	 * 
-	 * @param outFileName
-	 *            file name to store System.out's output
+	 * @param outFile
+	 *            log file name
 	 * @param append
-	 *            true: append
+	 *            true: append to previous file
 	 * @param replaceSystem
-	 *            set to replace System Streams (System.out, System.err)
+	 *            true: replace System.out/err
+	 * @return Logger
 	 */
-	public Logger(final String outFileName, final boolean append, final boolean replaceSystem) {
-		synchronized (this) {
-			if (log == null) {
-				try {
-					FileAppender appender = new FileAppender(outFileName, append, replaceSystem);
-					outStream = appender.outStream;
-					errStream = appender.errStream;
+	public static Logger toFile(final String outFile, final boolean append, final boolean replaceSystem) {
+		return toFile(outFile, null, append, replaceSystem);
+	}
+
+	/**
+	 * Print log message to file from now on
+	 * 
+	 * @param outFile
+	 *            log file name (normal messages)
+	 * @param errFile
+	 *            log file name (errors)
+	 * @param append
+	 *            true: append to previous file
+	 * @param replaceSystem
+	 *            true: replace System.out/err
+	 * @return Logger
+	 */
+	public static Logger toFile(final String outFile, final String errFile, final boolean append,
+			final boolean replaceSystem) {
+		synchronized (appenderLock) {
+			try {
+				IAppender oldAppender = appender;
+				if (errFile == null) {
+					appender = new FileAppender(outFile, append, replaceSystem);
 					separateStream = false;
-					appender.start();
-
-					log = this;
-				} catch (FileNotFoundException ex) {
-					outStream.println("Log: ====== can't create log file       =====");
-					outStream.println("Log: ====== log is redirected to stdout =====");
+				} else {
+					appender = new FileAppender(outFile, errFile, append, replaceSystem);
+					separateStream = true;
 				}
-			} else {
-				throw new IllegalStateException("You can't create Logger instance more than 1");
+				((FileAppender) appender).start();
+
+				if (oldAppender != null) {
+					oldAppender.close();
+				}
+
+			} catch (FileNotFoundException ex) {
+				PrintStream outStream = appender.getOutStream();
+				outStream.println("Log: ====== can't create log file       =====");
+				outStream.println("Log: ====== log is redirected to stdout =====");
 			}
 		}
-	}
 
-	/**
-	 * Constructor
-	 * 
-	 * @param outFileName
-	 *            file name to store System.out's output
-	 * @param errFileName
-	 *            file name to store System.err's output
-	 */
-	public Logger(final String outFileName, final String errFileName) {
-		this(outFileName, errFileName, true);
-	}
-
-	/**
-	 * Constructor
-	 * 
-	 * @param outFileName
-	 *            file name to store System.out's output
-	 * @param errFileName
-	 *            file name to store System.err's output
-	 * @param append
-	 *            true: append
-	 */
-	public Logger(final String outFileName, final String errFileName, final boolean append) {
-		this(outFileName, errFileName, append, false);
-	}
-
-	/**
-	 * Constructor
-	 * 
-	 * @param outFileName
-	 *            file name to store System.out's output
-	 * @param errFileName
-	 *            file name to store System.err's output
-	 * @param append
-	 *            true: append
-	 * @param replaceSystem
-	 *            set to replace System Streams (System.out, System.err)
-	 */
-	public Logger(final String outFileName, final String errFileName, final boolean append, final boolean replaceSystem) {
-		synchronized (this) {
-			if (log == null) {
-				try {
-					FileAppender appender = new FileAppender(outFileName, errFileName, append, replaceSystem);
-					outStream = appender.outStream;
-					errStream = appender.errStream;
-					separateStream = !outFileName.equals(errFileName);
-					appender.start();
-
-					log = this;
-				} catch (FileNotFoundException ex) {
-					outStream.println("Log: ====== can't create log file       =====");
-					outStream.println("Log: ====== log is redirected to stdout =====");
-				}
-			} else {
-				throw new IllegalStateException("You can't create Logger instance more than 1");
-			}
-
-		}
-	}
-
-	public static synchronized Logger getInstance() {
-		if (log == null) {
-			log = new Logger();
-		}
-
-		return log;
+		return singleton;
 	}
 
 	/**
@@ -245,10 +235,10 @@ public class Logger {
 	 * 0 means off, 1 means on.<br>
 	 * ex) "11111" - log everything, "00000" - no log<br>
 	 * 
-	 * @param logLevel
+	 * @param level
 	 */
-	public void setLogLevel(final String logLevel) {
-		this.logLevel = logLevel;
+	public void setLogLevel(final String level) {
+		logLevel = level;
 	}
 
 	/**
@@ -282,7 +272,24 @@ public class Logger {
 		}
 	}
 
+	public void print(final Object msg) {
+		PrintStream outStream = appender.getOutStream();
+
+		lock.lock();
+		try {
+			if (traceFlag) {
+				outStream.print(getTraceInfo() + msg);
+			} else {
+				outStream.print(msg);
+			}
+		} finally {
+			lock.unlock();
+		}
+	}
+
 	public void println(final Object msg) {
+		PrintStream outStream = appender.getOutStream();
+
 		lock.lock();
 		try {
 			if (traceFlag) {
@@ -296,7 +303,10 @@ public class Logger {
 	}
 
 	public void println(final int level, final Object msg) {
-		if (level < LogLevel.SYS) {
+		PrintStream outStream = appender.getOutStream();
+		PrintStream errStream = appender.getErrStream();
+
+		if (level == LogLevel.ERR) {
 			lock.lock();
 			try {
 				String printMsg;
@@ -306,9 +316,9 @@ public class Logger {
 					printMsg = LogLevel.strLevel[0] + msg;
 				}
 
-				outStream.println(printMsg);
+				errStream.println(printMsg);
 				if (separateStream) {
-					errStream.println(printMsg);
+					outStream.println(printMsg);
 				}
 			} finally {
 				lock.unlock();
@@ -337,7 +347,7 @@ public class Logger {
 					if (targetLevel == 1) {
 						outStream.println(printMsg);
 					}
-					if (level == LogLevel.WAN && separateStream) {
+					if ((level == LogLevel.WAN || level == LogLevel.ERR) && separateStream) {
 						errStream.println(printMsg);
 					}
 				} finally {
@@ -350,49 +360,64 @@ public class Logger {
 	}
 
 	public void println(final Object caller, final int nLevel, final Object msg) {
-		println(nLevel, getCallerInfo(caller) + msg);
+		lock.lock();
+		try {
+			println(nLevel, getCallerInfo(caller) + msg);
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public void println(final int nLevel, final Object... msgs) {
-		int totalLen = 0;
-		byte[][] msgsBytes = new byte[msgs.length][];
-
-		String aMsg;
-		for (int i = 0; i < msgs.length; i++) {
-			aMsg = (msgs[i] == null) ? "null" : msgs[i].toString();
-			try {
-				msgsBytes[i] = aMsg.getBytes(CharsetUtil.getDefaultEncoding());
-			} catch (UnsupportedEncodingException e) {
-				msgsBytes[i] = aMsg.getBytes();
-			}
-			totalLen += msgsBytes[i].length;
-		}
-
-		int offset = 0;
-		byte[] logMsg = new byte[totalLen];
-		for (int i = 0; i < msgs.length; i++) {
-			System.arraycopy(msgsBytes[i], 0, logMsg, offset, msgsBytes[i].length);
-			offset += msgsBytes[i].length;
-		}
-
+		lock.lock();
 		try {
-			println(nLevel, new String(logMsg, CharsetUtil.getDefaultEncoding()));
-		} catch (UnsupportedEncodingException e) {
-			println(nLevel, new String(logMsg));
+			int totalLen = 0;
+			byte[][] msgsBytes = new byte[msgs.length][];
+
+			String aMsg;
+			for (int i = 0; i < msgs.length; i++) {
+				aMsg = (msgs[i] == null) ? "null" : msgs[i].toString();
+				try {
+					msgsBytes[i] = aMsg.getBytes(CharsetUtil.getDefaultEncoding());
+				} catch (UnsupportedEncodingException e) {
+					msgsBytes[i] = aMsg.getBytes();
+				}
+				totalLen += msgsBytes[i].length;
+			}
+
+			int offset = 0;
+			byte[] logMsg = new byte[totalLen];
+			for (int i = 0; i < msgs.length; i++) {
+				System.arraycopy(msgsBytes[i], 0, logMsg, offset, msgsBytes[i].length);
+				offset += msgsBytes[i].length;
+			}
+
+			try {
+				println(nLevel, new String(logMsg, CharsetUtil.getDefaultEncoding()));
+			} catch (UnsupportedEncodingException e) {
+				println(nLevel, new String(logMsg));
+			}
+		} finally {
+			lock.unlock();
 		}
 	}
 
 	public void println(final Object caller, final int nLevel, final Object... msgs) {
-		if (caller == null) {
-			println(nLevel, msgs);
-		} else {
-			Object[] newMsgs = new Object[msgs.length + 1];
-			newMsgs[0] = getCallerInfo(caller);
-			for (int i = 0; i < msgs.length; i++) {
-				newMsgs[1 + i] = msgs[i];
-			}
+		lock.lock();
+		try {
+			if (caller == null) {
+				println(nLevel, msgs);
+			} else {
+				Object[] newMsgs = new Object[msgs.length + 1];
+				newMsgs[0] = getCallerInfo(caller);
+				for (int i = 0; i < msgs.length; i++) {
+					newMsgs[1 + i] = msgs[i];
+				}
 
-			println(nLevel, newMsgs);
+				println(nLevel, newMsgs);
+			}
+		} finally {
+			lock.unlock();
 		}
 	}
 
@@ -402,62 +427,117 @@ public class Logger {
 	 * @param msg
 	 */
 	public void hexDump(final byte[] msg) {
-		println(StringUtil.toHex(msg));
+		lock.lock();
+		try {
+			println(StringUtil.toHex(msg));
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public void error(final Object msg) {
-		println(LogLevel.ERR, msg);
+		lock.lock();
+		try {
+			println(LogLevel.ERR, msg);
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public void error(final Object caller, final Object msg) {
-		error(getCallerInfo(caller) + msg);
+		lock.lock();
+		try {
+			error(getCallerInfo(caller) + msg);
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public void system(final Object msg) {
-		println(LogLevel.SYS, msg);
+		lock.lock();
+		try {
+			println(LogLevel.SYS, msg);
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public void system(final Object caller, final Object msg) {
-		system(getCallerInfo(caller) + msg);
+		lock.lock();
+		try {
+			system(getCallerInfo(caller) + msg);
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public void warning(final Object msg) {
-		println(LogLevel.WAN, msg);
+		lock.lock();
+		try {
+			println(LogLevel.WAN, msg);
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public void warning(final Object caller, final Object msg) {
-		warning(getCallerInfo(caller) + msg);
+		lock.lock();
+		try {
+			warning(getCallerInfo(caller) + msg);
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public void info(final Object msg) {
-		println(LogLevel.INF, msg);
+		lock.lock();
+		try {
+			println(LogLevel.INF, msg);
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public void info(final Object caller, final Object msg) {
-		info(getCallerInfo(caller) + msg);
+		lock.lock();
+		try {
+			info(getCallerInfo(caller) + msg);
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public void debug(final Object msg) {
-		println(LogLevel.DBG, msg);
+		lock.lock();
+		try {
+			println(LogLevel.DBG, msg);
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public void debug(final Object caller, final Object msg) {
-		debug(getCallerInfo(caller) + msg);
+		lock.lock();
+		try {
+			debug(getCallerInfo(caller) + msg);
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public void trace(final Throwable thr) {
-		thr.printStackTrace();
+		lock.lock();
+		try {
+			thr.printStackTrace(appender.getErrStream());
+			if (separateStream) {
+				thr.printStackTrace(appender.getOutStream());
+			}
+		} finally {
+			lock.unlock();
+		}
 	}
 
-	public boolean isTracing() {
-		return traceFlag;
-	}
-
-	public void setTracing(final boolean trace_) {
-		this.traceFlag = trace_;
-	}
-
-	private String getCallerInfo(final Object caller) {
+	public String getCallerInfo(final Object caller) {
 		String result = "";
 		if (Validator.isNotNull(caller)) {
 			result = "[" + caller.getClass().getSimpleName() + "#" + caller.hashCode() + "] ";
@@ -465,7 +545,7 @@ public class Logger {
 		return result;
 	}
 
-	private String getTraceInfo() {
+	public String getTraceInfo() {
 		String result = "";
 		try {
 			throw new IllegalStateException();

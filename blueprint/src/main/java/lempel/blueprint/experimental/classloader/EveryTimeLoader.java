@@ -69,8 +69,7 @@ public class EveryTimeLoader extends ClassLoader {
 		this.classDir = classDir;
 	}
 
-	@SuppressWarnings("unchecked")
-	public Class loadClass(String name) throws ClassNotFoundException {
+	public Class<?> loadClass(String name) throws ClassNotFoundException {
 		return loadClass(name, false);
 	}
 
@@ -89,9 +88,8 @@ public class EveryTimeLoader extends ClassLoader {
 		return newClassLoader;
 	}
 
-	@SuppressWarnings("unchecked")
-	protected synchronized Class loadClass(String name, boolean resolve) throws ClassNotFoundException {
-		Class result = null;
+	protected synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+		Class<?> result = null;
 
 		if (name.startsWith("com.kbstar.iqm.pms")) {
 			try {

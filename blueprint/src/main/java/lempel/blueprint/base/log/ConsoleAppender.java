@@ -42,6 +42,8 @@
  */
 package lempel.blueprint.base.log;
 
+import java.io.PrintStream;
+
 /**
  * Log appender for console
  * 
@@ -50,11 +52,18 @@ package lempel.blueprint.base.log;
  * @since 2008. 12. 04
  * @last $Date$
  */
-public class ConsoleAppender {
+public class ConsoleAppender implements IAppender {
+	/** system appender (original System.out/err) */
+	protected static final SystemAppender sysAppender;
+
 	/** System.out */
 	protected transient LogStream outStream = null;
 	/** System.err */
 	protected transient LogStream errStream = null;
+
+	static {
+		sysAppender = new SystemAppender();
+	}
 
 	/**
 	 * Constructor
@@ -63,16 +72,46 @@ public class ConsoleAppender {
 	 *            set to replace System Streams (System.out, System.err)
 	 */
 	public ConsoleAppender(final boolean replaceSystem) {
-		if (outStream == null) {
-			outStream = new LogStream(System.out);
-		}
-		if (errStream == null) {
-			errStream = new LogStream(System.err);
-		}
+		outStream = new LogStream(sysAppender.getOutStream(), true);
+		errStream = new LogStream(sysAppender.getErrStream(), true);
 
 		if (replaceSystem) {
 			System.setOut(outStream);
 			System.setErr(outStream);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see lempel.blueprint.base.log.IAppender#getOutStream()
+	 */
+	public PrintStream getOutStream() {
+		return outStream;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see lempel.blueprint.base.log.IAppender#getErrStream()
+	 */
+	public PrintStream getErrStream() {
+		return errStream;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see lempel.blueprint.base.log.IAppender#close()
+	 */
+	public void close() {
+		if (errStream != null) {
+			errStream.close();
+			errStream = null;
+		}
+		if (outStream != null) {
+			outStream.close();
+			outStream = null;
 		}
 	}
 }

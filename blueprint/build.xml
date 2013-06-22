@@ -17,7 +17,7 @@
 	<!-- classpath -->
 	<path id="build.classpath">
 		<path>
-			<fileset id="lib" dir=".">
+			<fileset dir=".">
 				<patternset id="lib.jars">
 					<include name="lib/**" />
 				</patternset>
@@ -39,7 +39,7 @@
 
 	<!-- compile -->
 	<target name="compile">
-		<javac classpathref="build.classpath" source="${jdk}" target="${jdk}" srcdir="${src}" destdir="${classes}" deprecation="on" debug="ture">
+		<javac classpathref="build.classpath" source="${jdk}" target="${jdk}" srcdir="${src}" destdir="${classes}" deprecation="on" debug="on" >
 		</javac>
 	</target>
 
@@ -55,8 +55,11 @@
 		</manifest>
 
 		<jar jarfile="${dist}/blueprint-sdk.jar" filesonly="true" manifest="MANIFEST.MF">
-			<fileset dir="${classes}">
-			</fileset>
+			<fileset dir="${classes}" />
+		</jar>
+		
+		<jar jarfile="${dist}/blueprint-sdk-javadoc.jar" filesonly="true">
+			<fileset dir="${doc}" />
 		</jar>
 	</target>
 </project>

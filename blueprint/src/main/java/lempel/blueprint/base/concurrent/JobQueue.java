@@ -71,6 +71,8 @@ public class JobQueue<T> {
 	private boolean allBusyTrap = false;
 	/** lock for allBusyTrap flag */
 	private final Object allBusyTrapLock = new Object();
+	/** start/stop count */
+	private boolean count = false;;
 
 	/**
 	 * push a job Object to queue<br>
@@ -155,12 +157,24 @@ public class JobQueue<T> {
 	}
 
 	/**
+	 * start/stop count.<br>
+	 * this method is called by WorkerGroup<br>
+	 * 
+	 * @param flag
+	 */
+	protected void setCount(boolean flag) {
+		this.count = flag;
+	}
+
+	/**
 	 * counts a processed job<br>
 	 * this method is called by Worker<br>
 	 * 
 	 */
 	protected void increaseProcessedJobCounter() {
-		processedJobs.increase();
+		if (count) {
+			processedJobs.increase();
+		}
 	}
 
 	/**

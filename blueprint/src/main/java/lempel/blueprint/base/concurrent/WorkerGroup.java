@@ -69,9 +69,9 @@ public class WorkerGroup implements Terminatable, Runnable {
 
 	private static final Logger LOGGER = Logger.getInstance();
 
-	private final Class<? extends Worker> workerClass;
-	private transient final JobQueue jobQueue;
-	private transient final List<Worker> workers;
+	protected final Class<? extends Worker<?>> workerClass;
+	protected transient final JobQueue<Object> jobQueue;
+	protected transient final List<Worker<?>> workers;
 
 	private transient boolean running = false;
 
@@ -96,7 +96,7 @@ public class WorkerGroup implements Terminatable, Runnable {
 	 * @throws SecurityException
 	 *             Can't retrieve Worker's constructor
 	 */
-	public WorkerGroup(final Class<? extends Worker> workerClass, final int workerCount)
+	public WorkerGroup(final Class<? extends Worker<?>> workerClass, final int workerCount)
 			throws IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException,
 			SecurityException, NoSuchMethodException {
 		LOGGER.info(this, "creating worker group - class: " + workerClass + ", count: " + workerCount);
@@ -104,8 +104,8 @@ public class WorkerGroup implements Terminatable, Runnable {
 		// register to shutdown hook (Terminator)
 		Terminator.getInstance().register(this);
 
-		this.jobQueue = new JobQueue();
-		this.workers = new ArrayList<Worker>(workerCount);
+		this.jobQueue = new JobQueue<Object>();
+		this.workers = new ArrayList<Worker<?>>(workerCount);
 		this.workerClass = workerClass;
 
 		// instantiate & start workers
@@ -124,10 +124,10 @@ public class WorkerGroup implements Terminatable, Runnable {
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	private void newWorker() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
+	protected void newWorker() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
 			InvocationTargetException {
-		Worker aWorker;
-		Constructor<? extends Worker> cons = workerClass.getConstructor(JobQueue.class);
+		Worker<?> aWorker;
+		Constructor<? extends Worker<?>> cons = workerClass.getConstructor(JobQueue.class);
 		aWorker = cons.newInstance(jobQueue);
 		workers.add(aWorker);
 		aWorker.start();
@@ -138,7 +138,7 @@ public class WorkerGroup implements Terminatable, Runnable {
 	 * 
 	 * @param newThreads
 	 */
-	private void addWorkers(final int newThreads) {
+	protected void addWorkers(final int newThreads) {
 		int failure = 0;
 		for (int i = 0; i < newThreads; i++) {
 			try {
@@ -159,7 +159,7 @@ public class WorkerGroup implements Terminatable, Runnable {
 		running = false;
 
 		if (workers != null) {
-			Iterator<Worker> iter = workers.iterator();
+			Iterator<Worker<?>> iter = workers.iterator();
 			while (iter.hasNext()) {
 				iter.next().terminate();
 			}
@@ -189,6 +189,8 @@ public class WorkerGroup implements Terminatable, Runnable {
 		long start = 0L;
 
 		long maxThroughput = 0;
+		
+		jobQueue.setCount(true);
 
 		while (running) {
 			try {
@@ -229,5 +231,22 @@ public class WorkerGroup implements Terminatable, Runnable {
 				}
 			}
 		}
+	}
+
+	public String getActivity() {
+		return "queued=" + jobQueue.size() + ", workers=" + workers.size() + ", processing=" + getActiveWorkerCount();
+	}
+
+	protected int getActiveWorkerCount() {
+		int result = 0;
+
+		Iterator<Worker<?>> iter = workers.iterator();
+		while (iter.hasNext()) {
+			if (iter.next().isActive()) {
+				result++;
+			}
+		}
+
+		return result;
 	}
 }

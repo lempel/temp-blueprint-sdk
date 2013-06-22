@@ -49,13 +49,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import lempel.blueprint.base.util.StringUtil;
-
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.CellValue;
 
 /**
  * Reads Microsoft Excel 2003 file<br>
@@ -251,7 +250,7 @@ public class XlsReader {
 				result = Double.toString(cell.getNumericCellValue());
 				break;
 			case HSSFCell.CELL_TYPE_FORMULA:
-				HSSFFormulaEvaluator.CellValue cellValue = evaluator.evaluate(cell);
+				CellValue cellValue = evaluator.evaluate(cell);
 				switch (cellValue.getCellType()) {
 				case HSSFCell.CELL_TYPE_NUMERIC:
 					result = Long.toString((long) cellValue.getNumberValue());
@@ -291,7 +290,7 @@ public class XlsReader {
 				result = Long.toString((long) cell.getNumericCellValue());
 				break;
 			case HSSFCell.CELL_TYPE_FORMULA:
-				HSSFFormulaEvaluator.CellValue cellValue = evaluator.evaluate(cell);
+				CellValue cellValue = evaluator.evaluate(cell);
 				switch (cellValue.getCellType()) {
 				case HSSFCell.CELL_TYPE_NUMERIC:
 					result = Long.toString((long) cellValue.getNumberValue());

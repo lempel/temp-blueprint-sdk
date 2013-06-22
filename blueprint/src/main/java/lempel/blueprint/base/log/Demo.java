@@ -58,23 +58,21 @@ public class Demo {
 	 */
 	public static void main(final String[] args) {
 		String userDir = System.getProperty("user.dir");
-		System.out.println("System.out is redirected '" + userDir // NOPMD by
-																	// Simon Lee
-																	// on 09. 3.
-																	// 9 ����
-																	// 1:39
-				+ "\\out.log' file and System.err is to '" + userDir + "\\err.log'");
-		Logger log = new Logger("out.log", "err.log", true, true);
+		System.out.println("System.out is redirected '" + userDir + "\\out.log' file and System.err is to '" + userDir
+				+ "\\err.log'");
 
-		log.setLogLevel("11111");
-		log.setTracing(true);
+		Logger logger = Logger.toFile("out.log", "err.log", true, true);
 
-		log.println(LogLevel.ERR, "This is a error level message. It prints always.");
-		log.println(LogLevel.SYS, "This is a system level message.");
-		log.println(LogLevel.WAN, "This is a warning level message.");
-		log.println(LogLevel.INF, "This is a informaion level message.");
-		log.println(LogLevel.DBG, "This is a debug level message.");
-		log.println(LogLevel.SQL, "This is a sql level message.");
+		logger.setLogLevel("11111");
+		logger.setTraceFlag(true);
+
+		logger.println(LogLevel.ERR, "This is a error level message. It prints always.");
+		System.out.println("Using System.out.println");
+		logger.println(LogLevel.SYS, "This is a system level message.");
+		logger.println(LogLevel.WAN, "This is a warning level message.");
+		logger.println(LogLevel.INF, "This is a informaion level message.");
+		logger.println(LogLevel.DBG, "This is a debug level message.");
+		logger.println(LogLevel.SQL, "This is a sql level message.");
 
 		try {
 			throw new IllegalArgumentException("StackTrace example");
@@ -82,6 +80,6 @@ public class Demo {
 			ex.printStackTrace();
 		}
 
-		log.hexDump("ABCDEFGHIJKLMNOPQRSTUVWXYZ".getBytes());
+		logger.hexDump("ABCDEFGHIJKLMNOPQRSTUVWXYZ".getBytes());
 	}
 }

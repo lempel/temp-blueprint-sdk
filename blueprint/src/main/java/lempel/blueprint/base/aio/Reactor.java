@@ -58,12 +58,12 @@ import lempel.blueprint.base.util.Validator;
  * @since 2008. 11. 26.
  * @last $Date$
  */
-public class Reactor extends Worker {
+public class Reactor extends Worker<Object> {
 	private static final Logger LOGGER = Logger.getInstance();
 
 	private transient boolean running = false;
 
-	public Reactor(final JobQueue jobQueue) {
+	public Reactor(final JobQueue<Object> jobQueue) {
 		super(jobQueue);
 	}
 

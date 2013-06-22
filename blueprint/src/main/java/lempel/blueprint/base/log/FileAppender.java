@@ -56,7 +56,7 @@ import lempel.blueprint.base.concurrent.Terminatable;
  * @since 2000. 12. 04
  * @last $Date$
  */
-public class FileAppender implements Terminatable, Runnable {
+public class FileAppender implements Terminatable, Runnable, IAppender {
 	/** System.out */
 	protected transient LogStream outStream = null;
 	/** System.err */
@@ -99,13 +99,9 @@ public class FileAppender implements Terminatable, Runnable {
 	 */
 	public FileAppender(final String outFileName, final boolean append, final boolean replaceSystem)
 			throws FileNotFoundException {
-		if (outStream == null) {
-			outStream = new LogStream(new FileOutputStream(outFileName, append));
-			errStream = outStream;
-			this.outFileName = outFileName;
-
-			runFlag = true;
-		}
+		outStream = new LogStream(new FileOutputStream(outFileName, append), true);
+		errStream = outStream;
+		this.outFileName = outFileName;
 
 		if (replaceSystem) {
 			System.setOut(outStream);
@@ -149,12 +145,10 @@ public class FileAppender implements Terminatable, Runnable {
 	 */
 	public FileAppender(final String outFileName, final String errFileName, final boolean append,
 			final boolean replaceSystem) throws FileNotFoundException {
-		this(outFileName, append);
+		this(outFileName, append, replaceSystem);
 
-		if (errStream == null) {
-			errStream = new LogStream(new FileOutputStream(errFileName, append));
-			this.errFileName = errFileName;
-		}
+		errStream = new LogStream(new FileOutputStream(errFileName, append), true);
+		this.errFileName = errFileName;
 
 		if (replaceSystem) {
 			System.setErr(errStream);
@@ -176,43 +170,39 @@ public class FileAppender implements Terminatable, Runnable {
 	}
 
 	public void run() {
+		runFlag = true;
+
 		while (runFlag) {
-			if (outFileName.length() > 0) {
+			if (outFileName != null && !outFileName.isEmpty()) {
 				File outFile = new File(outFileName);
 
 				if (!outFile.exists()) {
-					outStream.close();
 					try {
+						LogStream oldStream = outStream;
+
 						outStream = new LogStream(outFileName);
+
+						// close when new stream is created
+						oldStream.close();
 					} catch (FileNotFoundException e) {
-						System.out.println("Can't create log file"); // NOPMD by
-																		// Simon
-																		// Lee
-																		// on
-																		// 09.
-																		// 3. 9
-																		// ����
-																		// 1:39
+						System.out.println("Can't create log file"); // NOPMD
 					}
 				}
 			}
 
-			if (errFileName.length() > 0 && !outFileName.equals(errFileName)) {
+			if (errFileName != null && !errFileName.isEmpty() && !outFileName.equals(errFileName)) {
 				File errFile = new File(errFileName);
 
 				if (!errFile.exists()) {
-					errStream.close();
 					try {
+						LogStream oldStream = errStream;
+
 						errStream = new LogStream(errFileName);
+
+						// close when new stream is created
+						oldStream.close();
 					} catch (FileNotFoundException e) {
-						System.out.println("Can't create log file"); // NOPMD by
-																		// Simon
-																		// Lee
-																		// on
-																		// 09.
-																		// 3. 9
-																		// ����
-																		// 1:39
+						System.out.println("Can't create log file"); // NOPMD
 					}
 				}
 			}
@@ -221,6 +211,56 @@ public class FileAppender implements Terminatable, Runnable {
 				Thread.sleep(2000);
 			} catch (InterruptedException ignored) {
 			}
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see lempel.blueprint.base.log.IAppender#getOutStream()
+	 */
+	public LogStream getOutStream() {
+		return outStream;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see lempel.blueprint.base.log.IAppender#getErrStream()
+	 */
+	public LogStream getErrStream() {
+		return errStream;
+	}
+
+	/**
+	 * @return outFileName �� ��
+	 */
+	public String getOutFileName() {
+		return outFileName;
+	}
+
+	/**
+	 * @return errFileName �� ��
+	 */
+	public String getErrFileName() {
+		return errFileName;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see lempel.blueprint.base.log.IAppender#close()
+	 */
+	public void close() {
+		terminate();
+
+		if (errStream != null) {
+			errStream.close();
+			errStream = null;
+		}
+		if (outStream != null) {
+			outStream.close();
+			outStream = null;
 		}
 	}
 }

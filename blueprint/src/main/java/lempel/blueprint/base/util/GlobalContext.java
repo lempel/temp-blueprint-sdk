@@ -43,6 +43,7 @@
 package lempel.blueprint.base.util;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Bad, bad, bad...<br>
@@ -53,8 +54,7 @@ import java.util.HashMap;
  * @since 2007. 07. 31
  * @last $Date$
  */
-@SuppressWarnings("unchecked")
-public class GlobalContext extends HashMap {
+public class GlobalContext extends HashMap<String, Object> {
 	private static final long serialVersionUID = 3099255535794184917L;
 
 	/** Singleton */
@@ -64,10 +64,11 @@ public class GlobalContext extends HashMap {
 		return context;
 	}
 
+	@SuppressWarnings("unchecked")
 	public GlobalContext clone() {
 		GlobalContext result = new GlobalContext();
 
-		result.putAll((HashMap) super.clone());
+		result.putAll((Map<? extends String, ? extends Object>) super.clone());
 
 		return result;
 	}

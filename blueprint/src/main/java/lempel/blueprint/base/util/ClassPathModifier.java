@@ -44,8 +44,8 @@ package lempel.blueprint.base.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -68,28 +68,39 @@ import java.net.URLClassLoader;
  * @last $Date$
  */
 public class ClassPathModifier {
-	@SuppressWarnings("unchecked")
-	private static final Class[] parameters = new Class[] { URL.class };
+	private static final Class<?>[] parameters = new Class[] { URL.class };
 
-	public static void addFile(final String str) throws IOException {
-		File file = new File(str);
-		addFile(file);
+	public static void addPath(String s) throws IOException {
+		File f = new File(s);
+		addPath(f);
 	}
 
-	public static void addFile(final File target) throws IOException {
-		addURI(target.toURI());
+	public static void addPath(File f) throws IOException {
+		addURL(f.toURI().toURL());
 	}
 
-	public static void addURI(final URI target) throws IOException {
+	public static void addURL(URL u) throws IOException {
 		URLClassLoader sysloader = (URLClassLoader) ClassLoader.getSystemClassLoader();
 		Class<URLClassLoader> sysclass = URLClassLoader.class;
+
 		try {
 			Method method = sysclass.getDeclaredMethod("addURL", parameters);
 			method.setAccessible(true);
-			method.invoke(sysloader, new Object[] { target });
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new IOException(e.getMessage());
+			method.invoke(sysloader, new Object[] { u });
+		} catch (SecurityException e) {
+			throw new IOException("", e);
+		} catch (IllegalArgumentException e) {
+			// Should not happen
+			throw new IOException("Can't call URLClassLoader.addURL(URL)", e);
+		} catch (NoSuchMethodException e) {
+			// Should not happen
+			throw new IOException("Can't call URLClassLoader.addURL(URL)", e);
+		} catch (IllegalAccessException e) {
+			// Should not happen
+			throw new IOException("Can't call URLClassLoader.addURL(URL)", e);
+		} catch (InvocationTargetException e) {
+			// Should not happen
+			throw new IOException("Can't call URLClassLoader.addURL(URL)", e);
 		}
 	}
 }

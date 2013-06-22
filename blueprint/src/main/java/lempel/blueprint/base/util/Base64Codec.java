@@ -42,11 +42,9 @@
  */
 package lempel.blueprint.base.util;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+import org.apache.commons.codec.binary.Base64;
 
 /**
  * Wrapper of sun.misc.BASE64Decoder/Decoder in $JAVA_HOME/jre/lib/rt.jar
@@ -64,14 +62,7 @@ public class Base64Codec {
 	 * @return
 	 */
 	public static byte[] encode(final byte[] input) {
-		byte[] result;
-		BASE64Encoder enc = new BASE64Encoder();
-		try {
-			result = enc.encodeBuffer(input).getBytes(CharsetUtil.getDefaultEncoding());
-		} catch (UnsupportedEncodingException e) {
-			result = enc.encodeBuffer(input).getBytes();
-		}
-		return result;
+		return Base64.encodeBase64(input);
 	}
 
 	/**
@@ -83,9 +74,9 @@ public class Base64Codec {
 	public static byte[] encode(final String input) {
 		byte[] result;
 		try {
-			result = encode(input.getBytes(CharsetUtil.getDefaultEncoding()));
+			result = Base64.encodeBase64(input.getBytes(CharsetUtil.getDefaultEncoding()));
 		} catch (UnsupportedEncodingException e) {
-			result = encode(input.getBytes());
+			result = Base64.encodeBase64(input.getBytes());
 		}
 		return result;
 	}
@@ -97,13 +88,7 @@ public class Base64Codec {
 	 * @return
 	 */
 	public static byte[] decode(final byte[] input) {
-		byte[] result;
-		try {
-			result = decode(new String(input, CharsetUtil.getDefaultEncoding()));
-		} catch (UnsupportedEncodingException e) {
-			result = decode(new String(input));
-		}
-		return result;
+		return Base64.decodeBase64(input);
 	}
 
 	/**
@@ -113,13 +98,6 @@ public class Base64Codec {
 	 * @return
 	 */
 	public static byte[] decode(final String input) {
-		byte[] result = null;
-		BASE64Decoder dec = new BASE64Decoder();
-		try {
-			result = dec.decodeBuffer(input);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
-		return result;
+		return Base64.decodeBase64(input.getBytes());
 	}
 }
