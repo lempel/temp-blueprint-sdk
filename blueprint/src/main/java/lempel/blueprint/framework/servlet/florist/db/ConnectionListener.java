@@ -62,9 +62,10 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.sql.DataSource;
 
-import lempel.blueprint.base.log.Logger;
 
 import org.apache.commons.dbcp.BasicDataSource;
+
+import blueprint.sdk.logger.Logger;
 
 /**
  * Create/Destroy JDBC Connection Pools<br>

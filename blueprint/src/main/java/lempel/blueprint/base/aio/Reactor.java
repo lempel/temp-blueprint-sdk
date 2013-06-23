@@ -44,11 +44,12 @@ package lempel.blueprint.base.aio;
 
 import java.nio.channels.ClosedChannelException;
 
+import blueprint.sdk.logger.Logger;
+import bluerpint.sdk.util.Validator;
+
 import lempel.blueprint.base.aio.session.Session;
 import lempel.blueprint.base.concurrent.JobQueue;
 import lempel.blueprint.base.concurrent.Worker;
-import lempel.blueprint.base.log.Logger;
-import lempel.blueprint.base.util.Validator;
 
 /**
  * Process each & every element from JobQueue, one at a time.

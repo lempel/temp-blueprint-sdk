@@ -52,8 +52,8 @@ import java.nio.channels.SocketChannel;
 
 import lempel.blueprint.base.concurrent.TimeoutHandler;
 import lempel.blueprint.base.io.IpFilter;
-import lempel.blueprint.base.log.Logger;
-import lempel.blueprint.base.util.Validator;
+import blueprint.sdk.logger.Logger;
+import bluerpint.sdk.util.Validator;
 import bluerpint.sdk.util.jvm.shutdown.Terminatable;
 
 /**

@@ -50,7 +50,8 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 
-import lempel.blueprint.base.log.Logger;
+import blueprint.sdk.logger.Logger;
+
 
 /**
  * Some helpful APIs for Socket handling

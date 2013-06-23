@@ -3,11 +3,12 @@ package lempel.blueprint.app.tracer;
 import java.io.IOException;
 import java.io.InputStream;
 
-import lempel.blueprint.base.log.Logger;
 
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.util.SyntheticRepository;
+
+import blueprint.sdk.logger.Logger;
 
 public class BcelHelper {
 	private static final Logger LOGGER = Logger.getInstance();

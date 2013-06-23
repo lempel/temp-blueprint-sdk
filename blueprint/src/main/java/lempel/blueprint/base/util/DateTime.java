@@ -47,6 +47,8 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 
+import bluerpint.sdk.util.StringUtil;
+
 /**
  * Collection of methods for date & time handling
  * 

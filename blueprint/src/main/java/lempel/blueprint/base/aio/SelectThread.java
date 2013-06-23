@@ -47,7 +47,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.util.Set;
 
-import lempel.blueprint.base.log.Logger;
+import blueprint.sdk.logger.Logger;
 import bluerpint.sdk.util.jvm.shutdown.Terminatable;
 
 /**

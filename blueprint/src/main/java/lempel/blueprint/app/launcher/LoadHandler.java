@@ -51,7 +51,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import lempel.blueprint.base.config.XmlConfig;
-import lempel.blueprint.base.log.Logger;
+import blueprint.sdk.logger.Logger;
 import bluerpint.sdk.util.jvm.ClasspathModifier;
 
 /**

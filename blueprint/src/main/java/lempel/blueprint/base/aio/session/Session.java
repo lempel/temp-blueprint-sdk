@@ -50,7 +50,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import lempel.blueprint.base.aio.SelectorLoadBalancer;
 import lempel.blueprint.base.aio.SocketChannelWrapper;
 import lempel.blueprint.base.aio.protocol.Protocol;
-import lempel.blueprint.base.util.Validator;
+import bluerpint.sdk.util.Validator;
 import bluerpint.sdk.util.jvm.shutdown.Terminatable;
 
 /**

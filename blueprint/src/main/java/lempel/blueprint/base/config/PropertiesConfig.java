@@ -52,11 +52,12 @@ import java.util.Properties;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import lempel.blueprint.base.log.Logger;
-import lempel.blueprint.base.util.Validator;
 
 import org.dom4j.DocumentException;
 import org.xml.sax.SAXException;
+
+import blueprint.sdk.logger.Logger;
+import bluerpint.sdk.util.Validator;
 
 /**
  * Manages Properties file

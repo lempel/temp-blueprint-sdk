@@ -47,7 +47,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import lempel.blueprint.base.util.Validator;
+import bluerpint.sdk.util.Validator;
+
 import uka.transport.MemoryInputStream;
 import uka.transport.MemoryOutputStream;
 

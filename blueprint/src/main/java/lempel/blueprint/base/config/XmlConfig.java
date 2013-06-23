@@ -52,8 +52,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import lempel.blueprint.base.log.Logger;
-import lempel.blueprint.base.util.Validator;
 
 import org.dom4j.io.DOMReader;
 import org.dom4j.io.OutputFormat;
@@ -65,6 +63,9 @@ import org.jaxen.function.StringFunction;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
+
+import blueprint.sdk.logger.Logger;
+import bluerpint.sdk.util.Validator;
 
 /**
  * Manages XML file

@@ -42,7 +42,7 @@
  */
 package lempel.blueprint.experimental.paddedstring;
 
-import lempel.blueprint.base.log.Logger;
+import blueprint.sdk.logger.Logger;
 
 /**
  * PaddedString Unmarshaller

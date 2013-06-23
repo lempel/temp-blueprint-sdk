@@ -47,7 +47,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import lempel.blueprint.base.log.Logger;
+import blueprint.sdk.logger.Logger;
+
 
 /**
  * loads class every time (always hot!)

@@ -58,8 +58,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import lempel.blueprint.base.aio.session.Session;
 import lempel.blueprint.base.concurrent.TimeoutHandler;
 import lempel.blueprint.base.concurrent.WorkerGroup;
-import lempel.blueprint.base.log.Logger;
-import lempel.blueprint.base.util.Validator;
+import blueprint.sdk.logger.Logger;
+import bluerpint.sdk.util.Validator;
 import bluerpint.sdk.util.jvm.shutdown.Terminatable;
 import bluerpint.sdk.util.jvm.shutdown.Terminator;
 

@@ -48,7 +48,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import lempel.blueprint.base.log.Logger;
+import blueprint.sdk.logger.Logger;
 import bluerpint.sdk.util.jvm.shutdown.Terminatable;
 import bluerpint.sdk.util.jvm.shutdown.Terminator;
 

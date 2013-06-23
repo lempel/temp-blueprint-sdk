@@ -53,7 +53,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import lempel.blueprint.base.io.ByteArrayHandler;
-import lempel.blueprint.base.util.CharsetUtil;
 
 import org.dom4j.io.DOMReader;
 import org.dom4j.io.OutputFormat;
@@ -62,6 +61,8 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+
+import bluerpint.sdk.util.CharsetUtil;
 
 /**
  * eXtream XML Parser (XP) - A VERY SIMPLE DOM parser.<br>

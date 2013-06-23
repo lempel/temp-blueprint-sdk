@@ -48,8 +48,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 
-import lempel.blueprint.base.log.LogLevel;
-import lempel.blueprint.base.log.Logger;
+import blueprint.sdk.logger.LogLevel;
+import blueprint.sdk.logger.Logger;
+
 
 /**
  * table handler

@@ -46,6 +46,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import bluerpint.sdk.util.CharsetUtil;
+import bluerpint.sdk.util.TimeStamper;
+
 /**
  * Miscellaneous methods
  * 

@@ -54,7 +54,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import lempel.blueprint.base.util.Validator;
+import bluerpint.sdk.util.Validator;
+
 
 /**
  * Handles ZIP file

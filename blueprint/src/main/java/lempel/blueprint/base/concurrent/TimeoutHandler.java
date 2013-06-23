@@ -45,7 +45,7 @@ package lempel.blueprint.base.concurrent;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import lempel.blueprint.base.log.Logger;
+import blueprint.sdk.logger.Logger;
 import bluerpint.sdk.util.jvm.shutdown.Terminatable;
 
 /**

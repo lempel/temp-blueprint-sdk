@@ -46,7 +46,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import lempel.blueprint.base.util.Validator;
+import bluerpint.sdk.util.Validator;
+
 
 /**
  * IP Filter (IPv4)

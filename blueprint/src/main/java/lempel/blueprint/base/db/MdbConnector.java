@@ -46,7 +46,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import lempel.blueprint.base.util.Validator;
+import bluerpint.sdk.util.Validator;
+
 
 /**
  * Creates java.sql.Connection instance for MDB file(MS Access)

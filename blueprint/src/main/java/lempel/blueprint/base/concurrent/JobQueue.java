@@ -45,7 +45,8 @@ package lempel.blueprint.base.concurrent;
 import java.util.List;
 import java.util.Vector;
 
-import lempel.blueprint.base.util.Counter;
+import bluerpint.sdk.util.Counter;
+
 
 /**
  * JobQueue for Workers.<br>

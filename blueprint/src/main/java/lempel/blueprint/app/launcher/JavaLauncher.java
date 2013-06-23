@@ -47,9 +47,10 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import lempel.blueprint.base.config.XmlConfig;
-import lempel.blueprint.base.log.Logger;
 
 import org.xml.sax.SAXException;
+
+import blueprint.sdk.logger.Logger;
 
 /**
  * A Java application launcher for jar hell.<br>

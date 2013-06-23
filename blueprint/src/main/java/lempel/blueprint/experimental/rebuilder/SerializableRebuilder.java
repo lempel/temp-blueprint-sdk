@@ -47,7 +47,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import lempel.blueprint.base.log.Logger;
 
 import org.apache.bcel.Constants;
 import org.apache.bcel.Repository;
@@ -65,6 +64,8 @@ import org.apache.bcel.generic.InstructionList;
 import org.apache.bcel.generic.MethodGen;
 import org.apache.bcel.generic.ObjectType;
 import org.apache.bcel.generic.Type;
+
+import blueprint.sdk.logger.Logger;
 
 /**
  * Some Serializable classes won't implements readObject/writeObject.<br>
