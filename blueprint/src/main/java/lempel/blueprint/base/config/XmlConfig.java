@@ -65,7 +65,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import blueprint.sdk.logger.Logger;
-import bluerpint.sdk.util.Validator;
+import blueprint.sdk.util.Validator;
 
 /**
  * Manages XML file

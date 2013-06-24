@@ -54,7 +54,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import bluerpint.sdk.util.Validator;
+import blueprint.sdk.util.Validator;
 
 
 /**

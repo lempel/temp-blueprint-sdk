@@ -47,7 +47,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import bluerpint.sdk.util.Validator;
+import blueprint.sdk.util.Validator;
 
 import uka.transport.MemoryInputStream;
 import uka.transport.MemoryOutputStream;

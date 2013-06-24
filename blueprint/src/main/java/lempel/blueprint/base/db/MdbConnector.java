@@ -46,7 +46,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import bluerpint.sdk.util.Validator;
+import blueprint.sdk.util.Validator;
 
 
 /**

@@ -52,7 +52,7 @@ import java.util.StringTokenizer;
 
 import lempel.blueprint.base.config.XmlConfig;
 import blueprint.sdk.logger.Logger;
-import bluerpint.sdk.util.jvm.ClasspathModifier;
+import blueprint.sdk.util.jvm.ClasspathModifier;
 
 /**
  * Add all dir/jar/zip files to current classpath and load target program within
