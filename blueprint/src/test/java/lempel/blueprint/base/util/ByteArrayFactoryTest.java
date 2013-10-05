@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Simon Lee, all rights reserved.
+ * Copyright 2009 Sangmin Lee, all rights reserved.
  */
 package lempel.blueprint.base.util;
 
@@ -8,7 +8,7 @@ import lempel.blueprint.base.log.Logger;
 /**
  * ByteArrayFactory Test
  * 
- * @author Simon Lee
+ * @author Sangmin Lee
  * @version $Revision$
  * @since 2009. 1. 20.
  * @last $Date$

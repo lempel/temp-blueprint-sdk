@@ -53,7 +53,7 @@ import java.util.ArrayList;
 /**
  * handles database meta data
  * 
- * @author Simon Lee
+ * @author Sangmin Lee
  * @version $Revision$
  * @since 2009. 9. 7.
  * @last $Date$

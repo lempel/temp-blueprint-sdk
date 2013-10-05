@@ -48,7 +48,7 @@ import java.sql.Types;
 /**
  * Table column info
  * 
- * @author Simon Lee
+ * @author Sangmin Lee
  * @version $Revision$
  * @since 2009. 9. 7.
  * @last $Date$

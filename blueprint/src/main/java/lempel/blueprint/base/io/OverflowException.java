@@ -45,7 +45,7 @@ package lempel.blueprint.base.io;
 /**
  * OverFlow occurred in CircularByteBuffer
  * 
- * @author Simon Lee
+ * @author Sangmin Lee
  * @version $Revision$
  * @since 2008. 12. 1.
  * @last $Date$

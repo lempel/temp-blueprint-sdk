@@ -10,7 +10,7 @@ import lempel.blueprint.base.log.Logger;
 /**
  * PipedStream Test
  * 
- * @author Simon Lee
+ * @author Sangmin Lee
  * @version $Revision$
  * @create 2008. 11. 24.
  * @since 1.5

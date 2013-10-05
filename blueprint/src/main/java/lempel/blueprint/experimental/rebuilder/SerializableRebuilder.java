@@ -72,7 +72,7 @@ import blueprint.sdk.logger.Logger;
  * Rebuilder injects readObject/writeObject methods to such classes.<br>
  * This may reduce reflection cost during serialization.<br>
  * 
- * @author Simon Lee
+ * @author Sangmin Lee
  * @version $Revision$
  * @since 2008. 03. 03
  * @last $Date$

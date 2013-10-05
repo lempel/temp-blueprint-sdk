@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Simon Lee, all rights reserved.
+ * Copyright 2008 Sangmin Lee, all rights reserved.
  */
 package lempel.blueprint.experimental.aio;
 
@@ -14,7 +14,7 @@ import lempel.blueprint.base.log.Logger;
 /**
  * Tests Acceptor
  * 
- * @author Simon Lee
+ * @author Sangmin Lee
  * @version $Revision$
  * @create 2008. 11. 26.
  * @since 1.5

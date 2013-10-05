@@ -52,7 +52,7 @@ import blueprint.sdk.util.Validator;
 /**
  * IP Filter (IPv4)
  * 
- * @author Simon Lee
+ * @author Sangmin Lee
  * @version $Revision$
  * @since 2008. 12. 9.
  * @last $Date$

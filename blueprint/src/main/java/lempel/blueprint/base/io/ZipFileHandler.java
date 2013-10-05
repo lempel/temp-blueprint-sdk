@@ -60,7 +60,7 @@ import blueprint.sdk.util.Validator;
 /**
  * Handles ZIP file
  * 
- * @author Simon Lee
+ * @author Sangmin Lee
  * @version $Revision$
  * @since 2007. 07. 19
  * @last $Date$

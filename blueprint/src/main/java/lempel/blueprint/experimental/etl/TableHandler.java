@@ -55,7 +55,7 @@ import blueprint.sdk.logger.Logger;
 /**
  * table handler
  * 
- * @author Simon Lee
+ * @author Sangmin Lee
  * @version $Revision$
  * @since 2009. 9. 7.
  * @last $Date$

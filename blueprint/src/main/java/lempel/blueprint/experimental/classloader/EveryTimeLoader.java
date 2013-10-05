@@ -53,7 +53,7 @@ import blueprint.sdk.logger.Logger;
 /**
  * loads class every time (always hot!)
  * 
- * @author Simon Lee
+ * @author Sangmin Lee
  * @version $Revision$
  * @since 2009. 3. 26.
  * @last $Date$

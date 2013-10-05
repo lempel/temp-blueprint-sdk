@@ -46,7 +46,7 @@ package lempel.blueprint.experimental.etl;
 /**
  * database type constants
  * 
- * @author Simon Lee
+ * @author Sangmin Lee
  * @version $Revision$
  * @since 2009. 9. 7.
  * @last $Date$

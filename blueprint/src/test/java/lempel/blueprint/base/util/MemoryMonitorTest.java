@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Simon Lee, all rights reserved.
+ * Copyright 2009 Sangmin Lee, all rights reserved.
  */
 package lempel.blueprint.base.util;
 
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Tests MemoryMonitor
  * 
- * @author Simon Lee
+ * @author Sangmin Lee
  * @version $Revision$
  * @since 2009. 3. 2.
  * @last $Date$

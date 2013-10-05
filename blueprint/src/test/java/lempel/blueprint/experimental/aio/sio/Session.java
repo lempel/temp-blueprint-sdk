@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Simon Lee, all rights reserved.
+ * Copyright 2008 Sangmin Lee, all rights reserved.
  */
 package lempel.blueprint.experimental.aio.sio;
 
@@ -14,7 +14,7 @@ import uka.transport.MemoryOutputStream;
 /**
  * Client Session for comparison
  * 
- * @author Simon Lee
+ * @author Sangmin Lee
  * @version $Revision$
  * @create 2008. 12. 3.
  * @since 1.5
@@ -71,8 +71,8 @@ public class Session extends Thread {
     }
 
     /**
-     * HTTP ¿äÃ»À» ´Ù ÀÐ¾î ³Â´Â°¡ È®ÀÎ<br>
-     * (¸¶Áö¸·À¸·Î ÀÐÀº ³»¿ëÀÌ ¿¬¼ÓµÈ µÎ°³ÀÇ new lineÀÌ¸é true)<br>
+     * HTTP ï¿½ï¿½Ã»ï¿½ï¿½ ï¿½ï¿½ ï¿½Ð¾ï¿½ ï¿½Â´Â°ï¿½ È®ï¿½ï¿½<br>
+     * (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Óµï¿½ ï¿½Î°ï¿½ï¿½ï¿½ new lineï¿½Ì¸ï¿½ true)<br>
      * 
      * @param data
      * @return

@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Simon Lee, all rights reserved.
+ * Copyright 2008 Sangmin Lee, all rights reserved.
  */
 package lempel.blueprint.base.io;
 
@@ -8,7 +8,7 @@ import lempel.blueprint.base.log.Logger;
 /**
  * IpFilter Test
  * 
- * @author Simon Lee
+ * @author Sangmin Lee
  * @version $Revision$
  * @since 2008. 12. 12.
  * @last $Date$

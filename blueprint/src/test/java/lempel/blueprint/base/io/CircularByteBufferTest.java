@@ -5,7 +5,7 @@ import lempel.blueprint.base.log.Logger;
 /**
  * CircularByteBuffer Test
  * 
- * @author Simon Lee
+ * @author Sangmin Lee
  * @version $Revision$
  * @create 2008. 11. 25.
  * @since 1.5

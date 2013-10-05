@@ -56,7 +56,7 @@ import blueprint.sdk.logger.Logger;
 /**
  * Some helpful APIs for Socket handling
  * 
- * @author Simon Lee
+ * @author Sangmin Lee
  * @since 2012. 10. 11.
  */
 public class SocketHelper {

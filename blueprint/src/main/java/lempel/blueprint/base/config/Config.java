@@ -51,7 +51,7 @@ import org.xml.sax.SAXException;
 /**
  * Common methods for Configuration Classes
  * 
- * @author Simon Lee
+ * @author Sangmin Lee
  * @version $Revision$
  * @since 2007. 10. 22
  * @last $Date$

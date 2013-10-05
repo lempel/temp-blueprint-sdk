@@ -55,7 +55,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * <br>
  * <b>This class is thread safe.</b><br>
  * 
- * @author Simon Lee
+ * @author Sangmin Lee
  * @version $Revision$
  * @since 2008. 11. 24.
  * @last $Date$

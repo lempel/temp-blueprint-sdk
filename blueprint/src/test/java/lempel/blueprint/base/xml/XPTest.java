@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Simon Lee, all rights reserved.
+ * Copyright 2008 Sangmin Lee, all rights reserved.
  */
 package lempel.blueprint.base.xml;
 
@@ -18,7 +18,7 @@ import org.w3c.dom.Document;
 /**
  * XP Test
  * 
- * @author Simon Lee
+ * @author Sangmin Lee
  * @version $Revision$
  * @create 2008. 12. 8.
  * @since 1.5

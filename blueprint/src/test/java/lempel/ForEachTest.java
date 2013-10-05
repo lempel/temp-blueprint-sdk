@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Simon Lee, all rights reserved.
+ * Copyright 2009 Sangmin Lee, all rights reserved.
  */
 package lempel;
 
@@ -8,7 +8,7 @@ import lempel.blueprint.base.util.TimeStamper;
 
 /**
  * 
- * @author Simon Lee
+ * @author Sangmin Lee
  * @version $Revision$
  * @since 2009. 2. 24.
  * @last $Date$

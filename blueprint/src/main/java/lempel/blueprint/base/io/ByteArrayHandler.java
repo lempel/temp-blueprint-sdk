@@ -47,7 +47,7 @@ package lempel.blueprint.base.io;
  * Some methods can change offset while others are not.<br>
  * <b>This class is not thread safe.</b><br>
  * 
- * @author Simon Lee
+ * @author Sangmin Lee
  * @version $Revision$
  * @since 2008. 02. 05
  * @last $Date$

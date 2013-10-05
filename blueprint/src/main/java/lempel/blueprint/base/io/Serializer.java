@@ -55,7 +55,7 @@ import uka.transport.MemoryOutputStream;
 /**
  * Object instantiation/serialization
  * 
- * @author Simon Lee
+ * @author Sangmin Lee
  * @version $Revision$
  * @since 2007. 07. 20
  * @last $Date$
