@@ -102,7 +102,6 @@ public class ZipFileHandler {
 		if (ioMode) {
 			try {
 				if (Validator.isNotNull(zout)) {
-					zout.flush();
 					zout.close();
 				}
 			} catch (IOException ignored) {
@@ -244,7 +243,6 @@ public class ZipFileHandler {
 		while ((readLength = zin.read(buffer)) > 0) {
 			dout.write(buffer, 0, readLength);
 		}
-		dout.flush();
 		dout.close();
 	}
 

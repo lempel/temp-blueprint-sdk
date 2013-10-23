@@ -114,10 +114,6 @@ public class SocketHelper {
 
 		if (output != null) {
 			try {
-				output.flush();
-			} catch (IOException ignored) {
-			}
-			try {
 				output.close();
 			} catch (IOException ignored) {
 			}

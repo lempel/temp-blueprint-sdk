@@ -53,7 +53,6 @@ public class Session extends Thread {
 		    if (isEOF(mos.getBuffer())) {
 			String msg = "OK. I got It. - " + System.currentTimeMillis();
 			dos.write(msg.getBytes());
-			dos.flush();
 
 			try {
 			    sock.close();
