@@ -75,8 +75,7 @@ public class MethodLogger {
 		if (props.isFastTrace()) {
 			synchronized (ftBuf) {
 				ftBuf.setLength(0);
-				ftBuf.append(thread.getName()).append("#").append(
-						thread.getId()).append(": ");
+				ftBuf.append(thread.getName()).append("#").append(thread.getId()).append(": ");
 				ftBuf.append(obj.getClass().getName());
 				ftBuf.append(".");
 				ftBuf.append(method);
@@ -99,8 +98,7 @@ public class MethodLogger {
 
 			synchronized (ftBuf) {
 				ftBuf.setLength(0);
-				ftBuf.append(thread.getName()).append("#").append(
-						thread.getId()).append(": ");
+				ftBuf.append(thread.getName()).append("#").append(thread.getId()).append(": ");
 
 				// TODO: for performance I could use a switch here and hard code
 				// a string
@@ -141,13 +139,12 @@ public class MethodLogger {
 	public static void staticMethodEnter(String className, String method) {
 		if (!props.isTrace())
 			return;
-		
+
 		if (props.isFastTrace()) {
 			synchronized (ftBuf) {
 				Thread thread = Thread.currentThread();
 				ftBuf.setLength(0);
-				ftBuf.append(thread.getName()).append("#").append(
-						thread.getId()).append(": ");
+				ftBuf.append(thread.getName()).append("#").append(thread.getId()).append(": ");
 				ftBuf.append(className);
 				ftBuf.append(".");
 				ftBuf.append(method);
@@ -171,8 +168,7 @@ public class MethodLogger {
 
 			synchronized (ftBuf) {
 				ftBuf.setLength(0);
-				ftBuf.append(thread.getName()).append("#").append(
-						thread.getId()).append(": ");
+				ftBuf.append(thread.getName()).append("#").append(thread.getId()).append(": ");
 
 				// indent based on stack size.
 				int stackSize = (tinfo != null ? tinfo.stackSize : 0);
@@ -221,8 +217,7 @@ public class MethodLogger {
 
 			synchronized (ftBuf) {
 				ftBuf.setLength(0);
-				ftBuf.append(thread.getName()).append("#").append(
-						thread.getId()).append(": ");
+				ftBuf.append(thread.getName()).append("#").append(thread.getId()).append(": ");
 
 				// indent based on stack size.
 				int stackSize = (tinfo != null ? tinfo.stackSize : 0);
@@ -264,19 +259,23 @@ public class MethodLogger {
 				log(ftBuf.toString());
 			}
 
-			// UPDATE THEAD MAP (stack size)
-			if (tinfo == null) {
-				// I could throw an exception here, because this should never
-				// happen. However since
-				// I must trust the instrumentation to be perfect, and since
-				// adding exception handling around
-				// every method enter and exit would be too much impact on
-				// performance, I opt not to catch
-				// this error case.
-			} else {
-				// ditto for error case if stackSize ever goes negative.
+			if (tinfo != null) {
 				tinfo.stackSize--;
-			}		
+			}
+
+//			// UPDATE THEAD MAP (stack size)
+//			if (tinfo == null) {
+//				// I could throw an exception here, because this should never
+//				// happen. However since
+//				// I must trust the instrumentation to be perfect, and since
+//				// adding exception handling around
+//				// every method enter and exit would be too much impact on
+//				// performance, I opt not to catch
+//				// this error case.
+//			} else {
+//				// ditto for error case if stackSize ever goes negative.
+//				tinfo.stackSize--;
+//			}
 		}
 	}
 
@@ -288,8 +287,7 @@ public class MethodLogger {
 
 					// TODO: how delayed is this output if PrintStream autoflush
 					// param is false instead?
-					out = new PrintStream(new BufferedOutputStream(
-							new FileOutputStream(logFileName)), true);
+					out = new PrintStream(new BufferedOutputStream(new FileOutputStream(logFileName)), true);
 				}
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();

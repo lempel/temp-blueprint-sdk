@@ -28,8 +28,7 @@ public class TracingXformer implements ClassFileTransformer {
 	public static Object lock = new Object();
 	static boolean debug = false;
 
-	@SuppressWarnings("unchecked")
-	public byte[] transform(ClassLoader loader, String className, Class redefiningClass, ProtectionDomain domain,
+	public byte[] transform(ClassLoader loader, String className, Class<?> redefiningClass, ProtectionDomain domain,
 			byte[] bytes) throws IllegalClassFormatException {
 		synchronized (lock) {
 			TracingProperties props = TracingProperties.getInstance();
