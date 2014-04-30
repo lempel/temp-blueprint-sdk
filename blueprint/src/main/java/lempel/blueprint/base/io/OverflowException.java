@@ -46,9 +46,7 @@ package lempel.blueprint.base.io;
  * OverFlow occurred in CircularByteBuffer
  * 
  * @author Sangmin Lee
- * @version $Revision$
  * @since 2008. 12. 1.
- * @last $Date$
  */
 public class OverflowException extends RuntimeException {
 	private static final long serialVersionUID = -1012404892800531219L;
