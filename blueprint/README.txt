@@ -1,7 +1,7 @@
 Background:
 
 	blueprint-sdk is a java software development kit to protect other open source
-softwares' licenses. It's intended to provide light weight APIs for blueprints.
+software licenses. It's intended to provide light weight APIs for blueprints.
 Well... at least trying to.
 
 	There are so many great open source projects now. Back in year 2000, there
@@ -21,7 +21,7 @@ source projects and my client's requirements.
 license terms.
 
 
-To commiters:
+To committers:
 
 	License terms of the other software used by your source code should not be
 violated by using your source code. That's why blueprint-sdk is made for.

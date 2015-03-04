@@ -14,7 +14,7 @@
  Background:
 
  blueprint-sdk is a java software development kit to protect other open source
- softwares' licenses. It's intended to provide light weight APIs for blueprints.
+ software licenses. It's intended to provide light weight APIs for blueprints.
  Well... at least trying to.
 
  There are so many great open source projects now. Back in year 2000, there
@@ -34,7 +34,7 @@
  license terms.
 
 
- To commiters:
+ To committers:
 
  License terms of the other software used by your source code should not be
  violated by using your source code. That's why blueprint-sdk is made for.
@@ -44,33 +44,32 @@ package lempel.blueprint.base.io;
 
 /**
  * OverFlow occurred in CircularByteBuffer
- * 
+ *
  * @author Sangmin Lee
  * @since 2008. 12. 1.
  */
 public class OverflowException extends RuntimeException {
-	private static final long serialVersionUID = -1012404892800531219L;
+    private static final long serialVersionUID = -1012404892800531219L;
 
-	private final int dataSize;
+    private final int dataSize;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param dataSize
-	 *            size of byte[] you pushed
-	 */
-	public OverflowException(final int dataSize) {
-		super();
+    /**
+     * Constructor
+     *
+     * @param dataSize size of byte[] you pushed
+     */
+    public OverflowException(final int dataSize) {
+        super();
 
-		this.dataSize = dataSize;
-	}
+        this.dataSize = dataSize;
+    }
 
-	public int getNeededCapacity() {
-		return dataSize;
-	}
+    public int getNeededCapacity() {
+        return dataSize;
+    }
 
-	@Override
-	public String toString() {
-		return "Insufficient buffer size - " + dataSize + " bytes needed";
-	}
+    @Override
+    public String toString() {
+        return "Insufficient buffer size - " + dataSize + " bytes needed";
+    }
 }

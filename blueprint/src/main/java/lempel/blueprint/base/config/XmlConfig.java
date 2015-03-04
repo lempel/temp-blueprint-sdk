@@ -14,7 +14,7 @@
  Background:
 
  blueprint-sdk is a java software development kit to protect other open source
- softwares' licenses. It's intended to provide light weight APIs for blueprints.
+ software licenses. It's intended to provide light weight APIs for blueprints.
  Well... at least trying to.
 
  There are so many great open source projects now. Back in year 2000, there
@@ -34,7 +34,7 @@
  license terms.
 
 
- To commiters:
+ To committers:
 
  License terms of the other software used by your source code should not be
  violated by using your source code. That's why blueprint-sdk is made for.
@@ -42,17 +42,8 @@
  */
 package lempel.blueprint.base.config;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.List;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-
+import blueprint.sdk.logger.Logger;
+import blueprint.sdk.util.Validator;
 import org.dom4j.io.DOMReader;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
@@ -64,313 +55,317 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-import blueprint.sdk.logger.Logger;
-import blueprint.sdk.util.Validator;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.List;
 
 /**
  * Manages XML file
- * 
+ *
  * @author Sangmin Lee
- * @version $Revision$
  * @since 2007. 10. 22
- * @last $Date$
  */
 public class XmlConfig implements Config {
-	private static final Logger LOGGER = Logger.getInstance();
+    private static final Logger LOGGER = Logger.getInstance();
 
-	private Document config = null;
+    private Document config = null;
 
-	public XmlConfig() {
-		super();
-	}
+    public XmlConfig() {
+        super();
+    }
 
-	public XmlConfig(final String fileName) throws IOException, ParserConfigurationException, SAXException {
-		this(null, fileName);
-	}
+    public XmlConfig(final String fileName) throws IOException, ParserConfigurationException, SAXException {
+        this(null, fileName);
+    }
 
-	public XmlConfig(final String templateFileName, final String fileName) throws IOException,
-			ParserConfigurationException, SAXException {
-		if (Validator.isNotEmpty(templateFileName)) {
-			XmlConfig.loadXmlFile(templateFileName);
-		}
+    public XmlConfig(final String templateFileName, final String fileName) throws IOException,
+            ParserConfigurationException, SAXException {
+        if (Validator.isNotEmpty(templateFileName)) {
+            XmlConfig.loadXmlFile(templateFileName);
+        }
 
-		if (fileName != null) {
-			XmlConfig.loadXmlFile(fileName);
-		}
-	}
+        if (fileName != null) {
+            XmlConfig.loadXmlFile(fileName);
+        }
+    }
 
-	public boolean getBoolean(final String path) {
-		boolean result = false;
-		String value = getString(path);
-		if (Validator.isNotEmpty(value)) {
-			result = Boolean.valueOf(value);
-		}
+    private static Document loadXmlFile(final String fileName) throws IOException, ParserConfigurationException,
+            SAXException {
+        DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        return builder.parse(fileName);
+    }
 
-		return result;
-	}
+    public boolean getBoolean(final String path) {
+        boolean result = false;
+        String value = getString(path);
+        if (Validator.isNotEmpty(value)) {
+            result = Boolean.valueOf(value);
+        }
 
-	public double getDouble(final String path) {
-		double result = Double.MIN_VALUE;
-		String value = getString(path);
-		if (Validator.isNotEmpty(value)) {
-			try {
-				result = NumberFormat.getNumberInstance().parse(value).doubleValue();
-			} catch (ParseException e) {
-				LOGGER.error("configuration path \"" + path + "\" not a double");
-			}
-		}
+        return result;
+    }
 
-		return result;
-	}
+    public double getDouble(final String path) {
+        double result = Double.MIN_VALUE;
+        String value = getString(path);
+        if (Validator.isNotEmpty(value)) {
+            try {
+                result = NumberFormat.getNumberInstance().parse(value).doubleValue();
+            } catch (ParseException e) {
+                LOGGER.error("configuration path \"" + path + "\" not a double");
+            }
+        }
 
-	public float getFloat(final String path) {
-		float result = Float.MIN_VALUE;
-		String value = getString(path);
-		if (Validator.isNotEmpty(value)) {
-			try {
-				result = NumberFormat.getNumberInstance().parse(value).floatValue();
-			} catch (ParseException e) {
-				LOGGER.error("configuration path \"" + path + "\" not a float");
-			}
-		}
+        return result;
+    }
 
-		return result;
-	}
+    public float getFloat(final String path) {
+        float result = Float.MIN_VALUE;
+        String value = getString(path);
+        if (Validator.isNotEmpty(value)) {
+            try {
+                result = NumberFormat.getNumberInstance().parse(value).floatValue();
+            } catch (ParseException e) {
+                LOGGER.error("configuration path \"" + path + "\" not a float");
+            }
+        }
 
-	public int getInt(final String path) {
-		int result = Integer.MIN_VALUE;
-		String value = getString(path);
-		if (Validator.isNotEmpty(value)) {
-			try {
-				result = NumberFormat.getNumberInstance().parse(value).intValue();
-			} catch (ParseException e) {
-				LOGGER.error("configuration path \"" + path + "\" is not an int");
-			}
-		}
+        return result;
+    }
 
-		return result;
-	}
+    public int getInt(final String path) {
+        int result = Integer.MIN_VALUE;
+        String value = getString(path);
+        if (Validator.isNotEmpty(value)) {
+            try {
+                result = NumberFormat.getNumberInstance().parse(value).intValue();
+            } catch (ParseException e) {
+                LOGGER.error("configuration path \"" + path + "\" is not an int");
+            }
+        }
 
-	public long getLong(final String path) {
-		long result = Long.MIN_VALUE;
-		String value = getString(path);
-		if (Validator.isNotEmpty(value)) {
-			try {
-				result = NumberFormat.getNumberInstance().parse(value).longValue();
-			} catch (ParseException e) {
-				LOGGER.error("configuration path \"" + path + "\" is not a long");
-			}
-		}
+        return result;
+    }
 
-		return result;
-	}
+    public long getLong(final String path) {
+        long result = Long.MIN_VALUE;
+        String value = getString(path);
+        if (Validator.isNotEmpty(value)) {
+            try {
+                result = NumberFormat.getNumberInstance().parse(value).longValue();
+            } catch (ParseException e) {
+                LOGGER.error("configuration path \"" + path + "\" is not a long");
+            }
+        }
 
-	public String getString(final String path) {
-		String result = null;
-		if (Validator.isNotNull(config)) {
-			try {
-				XPath expression = new org.jaxen.dom.DOMXPath(path);
-				Navigator navigator = expression.getNavigator();
+        return result;
+    }
 
-				List<?> results = expression.selectNodes(config);
-				if (results.isEmpty()) {
-					LOGGER.error("configuration path \"" + path + "\" not exists");
-				} else {
-					Node resultNode = (Node) results.get(0);
-					result = StringFunction.evaluate(resultNode, navigator);
-				}
-			} catch (JaxenException e) {
-				LOGGER.error("configuration path \"" + path + "\" is invalid");
-			}
-		}
+    public String getString(final String path) {
+        String result = null;
+        if (Validator.isNotNull(config)) {
+            try {
+                XPath expression = new org.jaxen.dom.DOMXPath(path);
+                Navigator navigator = expression.getNavigator();
 
-		return result;
-	}
+                List<?> results = expression.selectNodes(config);
+                if (results.isEmpty()) {
+                    LOGGER.error("configuration path \"" + path + "\" not exists");
+                } else {
+                    Node resultNode = (Node) results.get(0);
+                    result = StringFunction.evaluate(resultNode, navigator);
+                }
+            } catch (JaxenException e) {
+                LOGGER.error("configuration path \"" + path + "\" is invalid");
+            }
+        }
 
-	private static Document loadXmlFile(final String fileName) throws IOException, ParserConfigurationException,
-			SAXException {
-		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-		return builder.parse(fileName);
-	}
+        return result;
+    }
 
-	public void load(final String fileName) throws IOException, ParserConfigurationException, SAXException {
-		config = loadXmlFile(fileName);
-	}
+    public void load(final String fileName) throws IOException, ParserConfigurationException, SAXException {
+        config = loadXmlFile(fileName);
+    }
 
-	public void save(final String fileName) throws IOException {
-		org.dom4j.Document dom4jDoc = new DOMReader().read(config);
-		OutputFormat format = OutputFormat.createPrettyPrint();
-		XMLWriter writer = new XMLWriter(new FileWriter(fileName), format);
-		writer.write(dom4jDoc);
-		writer.close();
-	}
+    public void save(final String fileName) throws IOException {
+        org.dom4j.Document dom4jDoc = new DOMReader().read(config);
+        OutputFormat format = OutputFormat.createPrettyPrint();
+        XMLWriter writer = new XMLWriter(new FileWriter(fileName), format);
+        writer.write(dom4jDoc);
+        writer.close();
+    }
 
-	public boolean[] getBooleanArray(final String path) {
-		if (Validator.isNotNull(config)) {
-			try {
-				XPath expression = new org.jaxen.dom.DOMXPath(path);
-				Navigator navigator = expression.getNavigator();
+    public boolean[] getBooleanArray(final String path) {
+        if (Validator.isNotNull(config)) {
+            try {
+                XPath expression = new org.jaxen.dom.DOMXPath(path);
+                Navigator navigator = expression.getNavigator();
 
-				List<?> results = expression.selectNodes(config);
-				int resultSize = results.size();
-				boolean[] resultArray = new boolean[resultSize];
-				for (int i = 0; i < resultSize; i++) {
-					Node result = (Node) results.get(i);
-					resultArray[i] = Boolean.getBoolean(StringFunction.evaluate(result, navigator));
-				}
+                List<?> results = expression.selectNodes(config);
+                int resultSize = results.size();
+                boolean[] resultArray = new boolean[resultSize];
+                for (int i = 0; i < resultSize; i++) {
+                    Node result = (Node) results.get(i);
+                    resultArray[i] = Boolean.getBoolean(StringFunction.evaluate(result, navigator));
+                }
 
-				return resultArray;
-			} catch (JaxenException e) {
-				LOGGER.error("configuration path \"" + path + "\" is invalid");
-			}
-		}
+                return resultArray;
+            } catch (JaxenException e) {
+                LOGGER.error("configuration path \"" + path + "\" is invalid");
+            }
+        }
 
-		return new boolean[] {};
-	}
+        return new boolean[]{};
+    }
 
-	public double[] getDoubleArray(final String path) {
-		if (Validator.isNotNull(config)) {
-			try {
-				XPath expression = new org.jaxen.dom.DOMXPath(path);
-				Navigator navigator = expression.getNavigator();
+    public double[] getDoubleArray(final String path) {
+        if (Validator.isNotNull(config)) {
+            try {
+                XPath expression = new org.jaxen.dom.DOMXPath(path);
+                Navigator navigator = expression.getNavigator();
 
-				List<?> results = expression.selectNodes(config);
-				int resultSize = results.size();
-				double[] resultArray = new double[resultSize];
-				for (int i = 0; i < resultSize; i++) {
-					Node result = (Node) results.get(i);
-					resultArray[i] = NumberFormat.getNumberInstance().parse(StringFunction.evaluate(result, navigator))
-							.doubleValue();
-				}
+                List<?> results = expression.selectNodes(config);
+                int resultSize = results.size();
+                double[] resultArray = new double[resultSize];
+                for (int i = 0; i < resultSize; i++) {
+                    Node result = (Node) results.get(i);
+                    resultArray[i] = NumberFormat.getNumberInstance().parse(StringFunction.evaluate(result, navigator))
+                            .doubleValue();
+                }
 
-				return resultArray;
-			} catch (ParseException e) {
-				LOGGER.error("configuration path \"" + path + "\" is not a double array");
-			} catch (JaxenException e) {
-				LOGGER.error("configuration path \"" + path + "\" is invalid");
-			}
-		}
+                return resultArray;
+            } catch (ParseException e) {
+                LOGGER.error("configuration path \"" + path + "\" is not a double array");
+            } catch (JaxenException e) {
+                LOGGER.error("configuration path \"" + path + "\" is invalid");
+            }
+        }
 
-		return new double[] {};
-	}
+        return new double[]{};
+    }
 
-	public float[] getFloatArray(final String path) {
-		if (Validator.isNotNull(config)) {
-			try {
-				XPath expression = new org.jaxen.dom.DOMXPath(path);
-				Navigator navigator = expression.getNavigator();
+    public float[] getFloatArray(final String path) {
+        if (Validator.isNotNull(config)) {
+            try {
+                XPath expression = new org.jaxen.dom.DOMXPath(path);
+                Navigator navigator = expression.getNavigator();
 
-				List<?> results = expression.selectNodes(config);
-				int resultSize = results.size();
-				float[] resultArray = new float[resultSize];
-				for (int i = 0; i < resultSize; i++) {
-					Node result = (Node) results.get(i);
-					resultArray[i] = NumberFormat.getNumberInstance().parse(StringFunction.evaluate(result, navigator))
-							.floatValue();
-				}
+                List<?> results = expression.selectNodes(config);
+                int resultSize = results.size();
+                float[] resultArray = new float[resultSize];
+                for (int i = 0; i < resultSize; i++) {
+                    Node result = (Node) results.get(i);
+                    resultArray[i] = NumberFormat.getNumberInstance().parse(StringFunction.evaluate(result, navigator))
+                            .floatValue();
+                }
 
-				return resultArray;
-			} catch (ParseException e) {
-				LOGGER.error("configuration path \"" + path + "\" is not a float array");
-			} catch (JaxenException e) {
-				LOGGER.error("configuration path \"" + path + "\" is invalid");
-			}
-		}
+                return resultArray;
+            } catch (ParseException e) {
+                LOGGER.error("configuration path \"" + path + "\" is not a float array");
+            } catch (JaxenException e) {
+                LOGGER.error("configuration path \"" + path + "\" is invalid");
+            }
+        }
 
-		return new float[] {};
-	}
+        return new float[]{};
+    }
 
-	public int[] getIntArray(final String path) {
-		if (Validator.isNotNull(config)) {
-			try {
-				XPath expression = new org.jaxen.dom.DOMXPath(path);
-				Navigator navigator = expression.getNavigator();
+    public int[] getIntArray(final String path) {
+        if (Validator.isNotNull(config)) {
+            try {
+                XPath expression = new org.jaxen.dom.DOMXPath(path);
+                Navigator navigator = expression.getNavigator();
 
-				List<?> results = expression.selectNodes(config);
-				int resultSize = results.size();
-				int[] resultArray = new int[resultSize];
-				for (int i = 0; i < resultSize; i++) {
-					Node result = (Node) results.get(i);
-					resultArray[i] = NumberFormat.getNumberInstance().parse(StringFunction.evaluate(result, navigator))
-							.intValue();
-				}
+                List<?> results = expression.selectNodes(config);
+                int resultSize = results.size();
+                int[] resultArray = new int[resultSize];
+                for (int i = 0; i < resultSize; i++) {
+                    Node result = (Node) results.get(i);
+                    resultArray[i] = NumberFormat.getNumberInstance().parse(StringFunction.evaluate(result, navigator))
+                            .intValue();
+                }
 
-				return resultArray;
-			} catch (ParseException e) {
-				LOGGER.error("configuration path \"" + path + "\" is not an int array");
-			} catch (JaxenException e) {
-				LOGGER.error("configuration path \"" + path + "\" is invalid");
-			}
-		}
+                return resultArray;
+            } catch (ParseException e) {
+                LOGGER.error("configuration path \"" + path + "\" is not an int array");
+            } catch (JaxenException e) {
+                LOGGER.error("configuration path \"" + path + "\" is invalid");
+            }
+        }
 
-		return new int[] {};
-	}
+        return new int[]{};
+    }
 
-	public long[] getLongArray(final String path) {
-		if (Validator.isNotNull(config)) {
-			try {
-				XPath expression = new org.jaxen.dom.DOMXPath(path);
-				Navigator navigator = expression.getNavigator();
+    public long[] getLongArray(final String path) {
+        if (Validator.isNotNull(config)) {
+            try {
+                XPath expression = new org.jaxen.dom.DOMXPath(path);
+                Navigator navigator = expression.getNavigator();
 
-				List<?> results = expression.selectNodes(config);
-				int resultSize = results.size();
-				long[] resultArray = new long[resultSize];
-				for (int i = 0; i < resultSize; i++) {
-					Node result = (Node) results.get(i);
-					resultArray[i] = NumberFormat.getNumberInstance().parse(StringFunction.evaluate(result, navigator))
-							.longValue();
-				}
+                List<?> results = expression.selectNodes(config);
+                int resultSize = results.size();
+                long[] resultArray = new long[resultSize];
+                for (int i = 0; i < resultSize; i++) {
+                    Node result = (Node) results.get(i);
+                    resultArray[i] = NumberFormat.getNumberInstance().parse(StringFunction.evaluate(result, navigator))
+                            .longValue();
+                }
 
-				return resultArray;
-			} catch (ParseException e) {
-				LOGGER.error("configuration path \"" + path + "\" is not long array");
-			} catch (JaxenException e) {
-				LOGGER.error("configuration path \"" + path + "\" is invalid");
-			}
-		}
+                return resultArray;
+            } catch (ParseException e) {
+                LOGGER.error("configuration path \"" + path + "\" is not long array");
+            } catch (JaxenException e) {
+                LOGGER.error("configuration path \"" + path + "\" is invalid");
+            }
+        }
 
-		return new long[] {};
-	}
+        return new long[]{};
+    }
 
-	public String[] getStringArray(final String path) {
-		if (Validator.isNotNull(config)) {
-			try {
-				XPath expression = new org.jaxen.dom.DOMXPath(path);
-				Navigator navigator = expression.getNavigator();
+    public String[] getStringArray(final String path) {
+        if (Validator.isNotNull(config)) {
+            try {
+                XPath expression = new org.jaxen.dom.DOMXPath(path);
+                Navigator navigator = expression.getNavigator();
 
-				List<?> results = expression.selectNodes(config);
-				int resultSize = results.size();
-				String[] resultArray = new String[resultSize];
-				for (int i = 0; i < resultSize; i++) {
-					Node result = (Node) results.get(i);
-					resultArray[i] = StringFunction.evaluate(result, navigator);
-				}
+                List<?> results = expression.selectNodes(config);
+                int resultSize = results.size();
+                String[] resultArray = new String[resultSize];
+                for (int i = 0; i < resultSize; i++) {
+                    Node result = (Node) results.get(i);
+                    resultArray[i] = StringFunction.evaluate(result, navigator);
+                }
 
-				return resultArray;
-			} catch (JaxenException e) {
-				LOGGER.error("configuration path \"" + path + "\" is invalid");
-			}
-		}
+                return resultArray;
+            } catch (JaxenException e) {
+                LOGGER.error("configuration path \"" + path + "\" is invalid");
+            }
+        }
 
-		return new String[] {};
-	}
+        return new String[]{};
+    }
 
-	public String toString() {
-		return config.toString();
-	}
+    public String toString() {
+        return config.toString();
+    }
 
-	@Override
-	protected void finalize() throws Throwable {
-		config = null;
+    @Override
+    protected void finalize() throws Throwable {
+        config = null;
 
-		super.finalize();
-	}
+        super.finalize();
+    }
 
-	public Document getConfig() {
-		return config;
-	}
+    public Document getConfig() {
+        return config;
+    }
 
-	public void setConfig(Document config) {
-		this.config = config;
-	}
+    public void setConfig(Document config) {
+        this.config = config;
+    }
 }

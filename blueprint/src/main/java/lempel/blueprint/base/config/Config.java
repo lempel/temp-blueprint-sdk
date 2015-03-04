@@ -14,7 +14,7 @@
  Background:
 
  blueprint-sdk is a java software development kit to protect other open source
- softwares' licenses. It's intended to provide light weight APIs for blueprints.
+ software licenses. It's intended to provide light weight APIs for blueprints.
  Well... at least trying to.
 
  There are so many great open source projects now. Back in year 2000, there
@@ -34,7 +34,7 @@
  license terms.
 
 
- To commiters:
+ To committers:
 
  License terms of the other software used by your source code should not be
  violated by using your source code. That's why blueprint-sdk is made for.
@@ -42,36 +42,33 @@
  */
 package lempel.blueprint.base.config;
 
-import java.io.IOException;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
+import java.io.IOException;
 
 /**
  * Common methods for Configuration Classes
- * 
+ *
  * @author Sangmin Lee
- * @version $Revision$
  * @since 2007. 10. 22
- * @last $Date$
  */
 public interface Config {
-	boolean getBoolean(String path);
+    boolean getBoolean(String path);
 
-	double getDouble(String path);
+    double getDouble(String path);
 
-	float getFloat(String path);
+    float getFloat(String path);
 
-	int getInt(String path);
+    int getInt(String path);
 
-	long getLong(String path);
+    long getLong(String path);
 
-	String getString(String path);
+    String getString(String path);
 
-	void load(String fileName) throws IOException, ParserConfigurationException, SAXException;
+    void load(String fileName) throws IOException, ParserConfigurationException, SAXException;
 
-	void save(String fileName) throws IOException;
+    void save(String fileName) throws IOException;
 
-	String toString();
+    String toString();
 }

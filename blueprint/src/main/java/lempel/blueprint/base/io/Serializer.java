@@ -14,7 +14,7 @@
  Background:
 
  blueprint-sdk is a java software development kit to protect other open source
- softwares' licenses. It's intended to provide light weight APIs for blueprints.
+ software licenses. It's intended to provide light weight APIs for blueprints.
  Well... at least trying to.
 
  There are so many great open source projects now. Back in year 2000, there
@@ -34,7 +34,7 @@
  license terms.
 
 
- To commiters:
+ To committers:
 
  License terms of the other software used by your source code should not be
  violated by using your source code. That's why blueprint-sdk is made for.
@@ -42,57 +42,54 @@
  */
 package lempel.blueprint.base.io;
 
+import blueprint.sdk.util.Validator;
+import uka.transport.MemoryInputStream;
+import uka.transport.MemoryOutputStream;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import blueprint.sdk.util.Validator;
-
-import uka.transport.MemoryInputStream;
-import uka.transport.MemoryOutputStream;
-
 /**
  * Object instantiation/serialization
- * 
+ *
  * @author Sangmin Lee
- * @version $Revision$
  * @since 2007. 07. 20
- * @last $Date$
  */
 public class Serializer {
-	private transient MemoryOutputStream mout = new MemoryOutputStream(1024);
+    private transient MemoryOutputStream mout = new MemoryOutputStream(1024);
 
-	public Serializable instantiate(final byte[] data) throws ClassNotFoundException, IOException, RuntimeException {
-		MemoryInputStream min = new MemoryInputStream(data);
-		ObjectInputStream oin = new ObjectInputStream(min);
-		Serializable result = (Serializable) oin.readObject();
-		oin.close();
-		min.close();
-		return result;
-	}
+    public Serializable instantiate(final byte[] data) throws ClassNotFoundException, IOException, RuntimeException {
+        MemoryInputStream min = new MemoryInputStream(data);
+        ObjectInputStream oin = new ObjectInputStream(min);
+        Serializable result = (Serializable) oin.readObject();
+        oin.close();
+        min.close();
+        return result;
+    }
 
-	public byte[] serialize(final Serializable object) throws IOException {
-		ObjectOutputStream oout = new ObjectOutputStream(mout);
-		oout.writeObject(object);
-		oout.flush();
-		byte[] result = mout.getBuffer();
-		oout.close();
-		mout.reset();
-		return result;
-	}
+    public byte[] serialize(final Serializable object) throws IOException {
+        ObjectOutputStream oout = new ObjectOutputStream(mout);
+        oout.writeObject(object);
+        oout.flush();
+        byte[] result = mout.getBuffer();
+        oout.close();
+        mout.reset();
+        return result;
+    }
 
-	@Override
-	protected void finalize() throws Throwable {
-		try {
-			if (Validator.isNotNull(mout)) {
-				mout.close();
-			}
-		} catch (Exception ignored) {
-		} finally {
-			mout = null;
-		}
+    @Override
+    protected void finalize() throws Throwable {
+        try {
+            if (Validator.isNotNull(mout)) {
+                mout.close();
+            }
+        } catch (Exception ignored) {
+        } finally {
+            mout = null;
+        }
 
-		super.finalize();
-	}
+        super.finalize();
+    }
 }

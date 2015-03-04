@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <libelement value="jar://$MODULE_DIR$/lib/bcel/bcel-5.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/dom4j/dom4j-1.6.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/jaxen/jaxen-1.1.4.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/karmi/uka.jar!/" />
+    <src_description expected_position="0">
+      <src_folder value="file://$MODULE_DIR$/src/main/java" expected_position="0" />
+    </src_description>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/bin" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="module-library">
+      <library name="bcel-5.2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/bcel/bcel-5.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="dom4j-1.6.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/dom4j/dom4j-1.6.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module" module-name="blueprint-sdk" />
+    <orderEntry type="module" module-name="blueprint-sdk-logger" />
+    <orderEntry type="module-library">
+      <library name="jaxen-1.1.4.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/jaxen/jaxen-1.1.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="uka.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/karmi/uka.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+  </component>
+</module>
