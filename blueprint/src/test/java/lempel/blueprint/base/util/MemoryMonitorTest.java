@@ -5,6 +5,8 @@ package lempel.blueprint.base.util;
 
 import java.util.ArrayList;
 
+import blueprint.sdk.util.jvm.MemoryMonitor;
+
 /**
  * Tests MemoryMonitor
  *

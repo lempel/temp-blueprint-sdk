@@ -16,8 +16,6 @@ public class IpFilterTest {
     private static final Logger LOGGER = Logger.getInstance();
 
     public static void main(final String[] args) {
-        LOGGER.setTracing(true);
-
         IpFilter ipf1 = new IpFilter();
 
         String ip1 = "127.0.0.2";

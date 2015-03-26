@@ -4,6 +4,9 @@
 package lempel.blueprint.base.util;
 
 import blueprint.sdk.logger.Logger;
+import blueprint.sdk.util.ByteArrayFactory;
+import blueprint.sdk.util.ByteArrayPool;
+import blueprint.sdk.util.StringUtil;
 
 /**
  * ByteArrayFactory Test
