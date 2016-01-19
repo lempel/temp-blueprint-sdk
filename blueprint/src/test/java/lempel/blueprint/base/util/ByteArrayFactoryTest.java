@@ -22,7 +22,7 @@ public class ByteArrayFactoryTest {
         byte[][] arr = new byte[100][];
         for (int i = 0; i < 100; i++) {
             arr[i] = pool.newArray();
-            arr[i] = StringUtil.lpadSapce(Integer.toString(i), 10).getBytes();
+            arr[i] = StringUtil.lpadSpace(Integer.toString(i), 10).getBytes();
         }
         for (byte[] a : arr) {
             pool.release(a);
